@@ -19,10 +19,9 @@ class analytics {
 	 */
 	public function add()
         {
-		//Event::add("ushahidi_action.main_sidebar", array($this, 'add_nav_tab'));
-		//Event::add("ushahidi_action.header_nav", array($this, 'add_nav_tab'));
-		//Event::add("ushahidi_action.header_nav_bar", array($this, 'add_nav_tab'));
-		Event::add("ushahidi_action.nav_main_top", array($this, 'add_nav_tab'));
+		Event::add('ushahidi_action.nav_main_top', array($this, 'add_nav_tab'));
+                Event::add('ushahidi_action.header_scripts', array($this, 'analytics_js'));
+                Event::add('ushahidi_action.header_scripts', array($this, 'circle_count_js'));
 	}
 
         public function add_nav_tab($this_page = FALSE, $dontshow = FALSE)
@@ -52,6 +51,18 @@ class analytics {
 
             // render view
             $analytics_tab->render( TRUE );
+        }
+
+        public function analytics_js()
+        {
+            $js = View::factory('analytics_js');
+            $js->render( TRUE );
+        }
+
+        public function circle_count_js()
+        {
+            $js = View::factory('circle_count_js');
+            $js->render( TRUE );
         }
 }
 
