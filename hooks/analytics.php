@@ -1,9 +1,9 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 /**
- * Analyitics Hook
+ * Analytics Hook
  */
 
-class analyitics {
+class analytics {
 	
 	/**
 	 * Registers the main event add method
@@ -35,7 +35,7 @@ class analyitics {
                     $dontshow = array();
             }
 
-            if( ! in_array('contact',$dontshow))
+            if( ! in_array('analytics',$dontshow))
             {
                     $menu_items[] = array( 
                             'page' => 'analytics',
@@ -55,4 +55,4 @@ class analyitics {
         }
 }
 
-new analyitics;
+new analytics;
