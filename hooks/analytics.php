@@ -1,7 +1,4 @@
 <?php defined('SYSPATH') or die('No direct script access.');
-/**
- * Analytics Hook
- */
 
 class analytics {
 	
@@ -20,8 +17,7 @@ class analytics {
 	public function add()
         {
 		Event::add('ushahidi_action.nav_main_top', array($this, 'add_nav_tab'));
-                Event::add('ushahidi_action.header_scripts', array($this, 'analytics_js'));
-                Event::add('ushahidi_action.header_scripts', array($this, 'circle_count_js'));
+                Event::add('ushahidi_action.header_scripts', array($this, 'add_chartjs'));
 	}
 
         public function add_nav_tab($this_page = FALSE, $dontshow = FALSE)
@@ -53,16 +49,16 @@ class analytics {
             $analytics_tab->render( TRUE );
         }
 
-        public function analytics_js()
+        public function add_chartjs()
         {
-            $js = View::factory('analytics_js');
+            $js = View::factory('chartjs_js');
             $js->render( TRUE );
         }
 
-        public function circle_count_js()
-        {
-            $js = View::factory('circle_count_js');
-            $js->render( TRUE );
+        public function get_categories(){
+            $incidents = reports::fetch_incidents(TRUE);
+
+            echo "$incidents";
         }
 }
 

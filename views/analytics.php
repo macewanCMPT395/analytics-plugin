@@ -1,10 +1,11 @@
 <div id="content">
 	<div class="content-bg">
-		<!-- start contacts block -->
+		<!-- start analytics block -->
 		<div class="big-block">
 			<h1><?php echo Kohana::lang('ui_main.analytics'); ?></h1>
-                        <h2><?php echo $hello; ?></h2>
+                        <script type="text/javascript"><?php echo "$chart"; ?></script>
+                        <canvas id="myChart" width="400" height="400"></canvas>
 		</div>
-		<!-- end contacts block -->
+		<!-- end analytics block -->
 	</div>
 </div>
