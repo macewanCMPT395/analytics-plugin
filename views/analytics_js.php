@@ -13,28 +13,20 @@
  * @license    http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL) 
  */
  ?>
-
-function get_piechart_data(){
-    var url = "<?php echo url::site().'json/'; ?>";
-
-    // get the chart data
-    $.ajax({
-        url: url,
-        data: options,
-        success: function(response){
-        },
-        dataType: "json"
-    });
-}
-
 $( document ).ready( function (){
-    // Get context
-    var ctx = $('#myChart').get(0).getContext('2d');
 
-    // get first returned node in collection
-    var myNewChart = new Chart(ctx);
+    // get data
+    var data = <?php echo "$this->pieChartData"; ?>;
 
-    var data = <?php echo "$this->pieChartData" ?>;
-
-    new Chart(ctx).Pie(data);
+    // Plot Pie Chart
+    $.plot('#myChart', data, {
+        series: {
+            pie: {
+                show: true
+            }
+        },
+        legend: {
+            show: true
+        }
+    });
 });
