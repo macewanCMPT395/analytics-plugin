@@ -17,7 +17,8 @@ class analytics {
 	public function add()
         {
 		Event::add('ushahidi_action.nav_main_top', array($this, 'add_nav_tab'));
-                Event::add('ushahidi_action.header_scripts', array($this, 'add_chartjs'));
+                //Event::add('ushahidi_action.header_scripts', array($this, 'add_chartjs'));
+                Event::add('ushahidi_action.header_scripts', array($this, 'add_flotjs'));
 	}
 
         public function add_nav_tab($this_page = FALSE, $dontshow = FALSE)
@@ -53,6 +54,12 @@ class analytics {
         {
             $js = View::factory('chartjs_js');
             $js->render( TRUE );
+        }
+
+        public function add_flotjs()
+        {
+            $js = View::factory('flot_js');
+            $js->render(TRUE);
         }
 
         public function get_categories(){
