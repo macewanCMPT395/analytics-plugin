@@ -29,6 +29,7 @@ class Analytics_Controller extends Main_Controller {
 
         $this->template->content->chart = new View( 'analytics_js' );
 
+        //$this->pieChartData = $this->piechart_json(); 
         $this->pieChartData = $this->piechart_json(); 
     }
 
@@ -70,8 +71,8 @@ class Analytics_Controller extends Main_Controller {
 
             $json_item = array();
             $json_item = array(
-                'value' => (int)$item->count,
-                'color' => '#'.$item->category_color
+                'label' => $item->category_title,
+                'data' => $item->count
             );
 
             array_push($json_features, $json_item);
