@@ -34,28 +34,7 @@ $( document ).ready( function (){
     // get first returned node in collection
     var myNewChart = new Chart(ctx);
 
-    var url = <?php echo '"'.url::site().'json/index'.'";'; ?>;
-    alert( url );
-    
-    var data = [
-        {
-            value: 30,
-            color: "#f38630"
-        },
-        {
-            value: 50,
-            color: "#e0e4cc"
-        },
-        {
-            value: 100,
-            color: "#69d2e7"
-        }
-    ]
+    var data = <?php echo "$this->pieChartData" ?>;
 
     new Chart(ctx).Pie(data);
-});
-
-
-$( document ).ready( function() {
-
 });
