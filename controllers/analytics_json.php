@@ -102,7 +102,7 @@ class Analytics_json_Controller extends Controller {
                 {
                     $json_item = array(
                         (int)$incident->count,
-                        strtotime( $incident->incident_date )
+                        $incident->incident_date
                     );
                 }
                 // incidents of all time
@@ -111,7 +111,7 @@ class Analytics_json_Controller extends Controller {
                     $sum += (int)$incident->count;
                     $json_item = array(
                         $sum,
-                        strtotime( $incident->incident_date )
+                        $incident->incident_date
                     );
                 }
 
@@ -122,6 +122,7 @@ class Analytics_json_Controller extends Controller {
             $json_category = array();
             $json_category = array(
                 'category' => $category->category_title,
+                'color' => $category->category_color,
                 'chart' => $json_category_data
             );
 
