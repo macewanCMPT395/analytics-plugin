@@ -47,11 +47,20 @@ $( document ).ready( function (){
                     { data: mydata['chartData'][6]['data'], label: mydata['chartData'][6]['category'] },
                     { data: mydata['chartData'][7]['data'], label: mydata['chartData'][7]['category'] },
                     { data: mydata['chartData'][8]['data'], label: mydata['chartData'][8]['category'] },
-                    { data: mydata['chartData'][9]['data'], label: mydata['chartData'][9]['category'] }
+                    { data: mydata['chartData'][9]['data'], label: mydata['chartData'][9]['category'] },
+                    { data: mydata['chartData'][10]['data'], label: mydata['chartData'][10]['category'] },
+                    { data: mydata['chartData'][11]['data'], label: mydata['chartData'][11]['category'] },
+                    { data: mydata['chartData'][12]['data'], label: mydata['chartData'][12]['category'] },
+                    { data: mydata['chartData'][13]['data'], label: mydata['chartData'][13]['category'] },
+                    { data: mydata['chartData'][14]['data'], label: mydata['chartData'][14]['category'] },
+                    { data: mydata['chartData'][15]['data'], label: mydata['chartData'][15]['category'] },
+                    { data: mydata['chartData'][16]['data'], label: mydata['chartData'][16]['category'] },
+                    { data: mydata['chartData'][17]['data'], label: mydata['chartData'][17]['category'] },
+                    { data: mydata['chartData'][18]['data'], label: mydata['chartData'][18]['category'] }
             ], {
-            xaxis: [ { mode: "time" } ],
-            yaxis: [ { min: 0 } ],
-            legend: { position: "sw" }
+            xaxis: { mode: "time" },
+            yaxis: { min: 0 },
+            legend: { position: "nw" }
         }); // end plot
     }); // end getJSON
 
@@ -67,11 +76,20 @@ $( document ).ready( function (){
             { data: mydata['chartData'][6]['data'], label: mydata['chartData'][6]['category'] },
             { data: mydata['chartData'][7]['data'], label: mydata['chartData'][7]['category'] },
             { data: mydata['chartData'][8]['data'], label: mydata['chartData'][8]['category'] },
-            { data: mydata['chartData'][9]['data'], label: mydata['chartData'][9]['category'] }
+            { data: mydata['chartData'][9]['data'], label: mydata['chartData'][9]['category'] },
+            { data: mydata['chartData'][10]['data'], label: mydata['chartData'][10]['category'] },
+            { data: mydata['chartData'][11]['data'], label: mydata['chartData'][11]['category'] },
+            { data: mydata['chartData'][12]['data'], label: mydata['chartData'][12]['category'] },
+            { data: mydata['chartData'][13]['data'], label: mydata['chartData'][13]['category'] },
+            { data: mydata['chartData'][14]['data'], label: mydata['chartData'][14]['category'] },
+            { data: mydata['chartData'][15]['data'], label: mydata['chartData'][15]['category'] },
+            { data: mydata['chartData'][16]['data'], label: mydata['chartData'][16]['category'] },
+            { data: mydata['chartData'][17]['data'], label: mydata['chartData'][17]['category'] },
+            { data: mydata['chartData'][18]['data'], label: mydata['chartData'][18]['category'] }
         ], {
-            xaxis: [ { mode: "time" } ],
-            yaxis: [ { min: 0 } ],
-            legend: { position: "sw" }
+            xaxis: { mode: "time" },
+            yaxis: { min: 0 },
+            legend: { position: "nw" },
         }); // end plot
     }); // end getJSON
 
