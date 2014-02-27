@@ -28,58 +28,5 @@ class Analytics_Controller extends Main_Controller {
         $this->template->header->page_title .= Kohana::lang('ui_main.analytics').Kohana::config('settings.title_delimiter');
 
         $this->template->content->chart = new View( 'analytics_js' );
-
-        //$this->pieChartData = $this->piechart_json(); 
-        $this->pieChartData = $this->piechart_json(); 
-    }
-
-    /**
-     * Get json piechart formatting
-     */
-    public function analytics_json( )
-    {
-        $json_features = $this->piechart_json();
-        $this->render_analytics_json( $json_features );
-    }
-
-    public function render_analytics_json( $json_features )
-    {
-        $json = json_encode( array(
-            "type" => "FeatureCollection",
-            "features" => $json_features
-        ));
-
-        //header( 'Content-type: application/json; charset=utf-8');
-
-        echo $json;
-    }
-
-    public function piechart_json()
-    {
-        $db = new Database();
-
-        // query database
-        $sql = "SELECT COUNT( category.id ) AS count, category.category_title, category.category_color FROM category JOIN incident_category ON category.id=incident_category.category_id JOIN incident ON incident_category.incident_id=incident.id GROUP BY category.id";
-        //$sql = "SELECT category.category_title, incident.incident_title, category.category_color FROM category JOIN incident_category ON category.id=incident_category.category_id JOIN incident ON incident_category.incident_id=incident.id";
-        $query = $db->query($sql);
-
-        // create JSON object
-        $json_features = array();
-        foreach( $query as $item )
-        {
-            //var_dump( $item );
-
-            $json_item = array();
-            $json_item = array(
-                'label' => $item->category_title,
-                'data' => $item->count
-            );
-
-            array_push($json_features, $json_item);
-        }
-
-        $json = json_encode( $json_features );
-
-        return $json;
     }
 } // End Main
