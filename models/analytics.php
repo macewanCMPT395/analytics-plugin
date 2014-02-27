@@ -16,11 +16,11 @@ class Analytics_Model extends Model {
     {
         if( $category_id == -1 )
         {
-            $sql = "SELECT category.id, category.category_title FROM category";
+            $sql = "SELECT category.id, category.category_title, category.category_color FROM category";
         }
         else
         {
-            $sql = "SELECT category.id, category.category_title FROM category WHERE category.id=".$category_id;
+            $sql = "SELECT category.id, category.category_title, category.category_color FROM category WHERE category.id=".$category_id;
         }
         return $this->db->query($sql);
     }
