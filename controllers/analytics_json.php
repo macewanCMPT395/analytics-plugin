@@ -75,43 +75,48 @@ class Analytics_json_Controller extends Controller {
         return $json_features;
     }
 
+    /**
+     * Create a JSON object
+     *
+     * @param type the type of linechart to create: 0 = daily, 1 = total
+     * @return a JSON object with the desired data to be rendered
+     */
     protected function create_linechart_json( $type = 0 )
     {
         $db = new Analytics_Model;
 
-        $categories = $db->get_categories();
-
+        // for each category create data set
         $json = array();
+        $categories = $db->get_categories();
         foreach( $categories as $category )
         {
-            //echo "$category->id : $category->category_title\n";
-            // query database
             $incidents = $db->get_incidents_by_category( $category->id );
+            $total = 0;
 
-            // create category data
-            $sum = 0;
+            // create data points
             $json_category_data = array();
             foreach( $incidents as $incident )
             {
-                //echo "->$incident->count : $incident->incident_date\n";
-
                 $json_item = array();
 
-                // incidents a day
+                // create javascript compatible string
+                $timestamp = strtotime( $incident->incident_date ) * 1000;
+                $count = (int)$incident->count;
+                $total += $count;
+
+                // select data set
                 if( $type == 0 )
                 {
                     $json_item = array(
-                        (int)$incident->count,
-                        $incident->incident_date
+                        $timestamp,
+                        $count
                     );
                 }
-                // incidents of all time
                 else
                 {
-                    $sum += (int)$incident->count;
                     $json_item = array(
-                        $sum,
-                        $incident->incident_date
+                        $timestamp,
+                        $total
                     );
                 }
 
@@ -123,11 +128,12 @@ class Analytics_json_Controller extends Controller {
             $json_category = array(
                 'category' => $category->category_title,
                 'color' => $category->category_color,
-                'chart' => $json_category_data
+                'data' => $json_category_data
             );
 
             array_push( $json, $json_category );
         }
+
         return $json;
     }
 } // End Main

@@ -1,9 +1,9 @@
+<script type="text/javascript"><?php echo "$chart"; ?></script>
 <div id="content">
 	<div class="content-bg">
 		<!-- start analytics block -->
 		<div class="big-block">
 			<h1><?php echo Kohana::lang('ui_main.analytics'); ?></h1>
-                        <script type="text/javascript"><?php echo "$chart"; ?></script>
                         
                         <div id="analytic-tabs">
                             <ul>
@@ -14,20 +14,21 @@
 
                             <div id="all-time">
                                 ALL TIME
-                                <div id="pieChart" style="width:100%;height:600px;"></div>
+                                <div id="chart-all-time" style="width:100%;height:600px;"></div>
                             </div>
-                            <!-- end all-time block -->
+                            <!-- end total-pie-chart block -->
 
                             <div id="daily-incidents">
                                 DAILY INCIDENTS
+                                <div id="chart-daily-incidents" style="width:100%;height:600px;"></div>
                             </div>
-                            <!-- end daily-incidents block -->
+                            <!-- end total-incidents block -->
 
                             <div id="total-incidents">
                                 TOTAL INCIDENTS
-                                <div id="multiAxisChart" style="width:100%;height:600px;"></div>
+                                <div id="chart-total-incidents" style="width:100%;height:600px;"></div>
                             </div>
-                            <!-- end total-incidents block -->
+                            <!-- end daily-incidents block -->
                         </div>
                         <!-- end analytic-tabs block -->
 		</div>

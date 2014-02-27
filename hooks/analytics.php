@@ -17,7 +17,6 @@ class analytics {
 	public function add()
         {
 		Event::add('ushahidi_action.nav_main_top', array($this, 'add_nav_tab'));
-                //Event::add('ushahidi_action.header_scripts', array($this, 'add_chartjs'));
                 Event::add('ushahidi_action.header_scripts', array($this, 'add_flotjs'));
 	}
 
@@ -48,12 +47,6 @@ class analytics {
 
             // render view
             $analytics_tab->render( TRUE );
-        }
-
-        public function add_chartjs()
-        {
-            $js = View::factory('chartjs_js');
-            $js->render( TRUE );
         }
 
         public function add_flotjs()
