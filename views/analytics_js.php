@@ -142,6 +142,7 @@ $( document ).ready( function (){
         if( typeof( yAxisLabel ) === 'undefined' )
             yAxisLabel = "y";
 
+        // Create options
         var options = {
             series: {
                 lines: {
