@@ -16,11 +16,17 @@ class analytics {
 	 */
 	public function add()
         {
-		Event::add('ushahidi_action.nav_main_top', array($this, 'add_nav_tab'));
+		Event::add('ushahidi_action.nav_main_top', array($this, 'navigation_tab'));
                 Event::add('ushahidi_action.header_scripts', array($this, 'add_flotjs'));
 	}
 
-        public function add_nav_tab($this_page = FALSE, $dontshow = FALSE)
+        /**
+         * Create analytics navigation tab
+         *
+         * @param this_page show tabs on this page
+         * @param dont show tabs
+         */
+        public function navigation_tab($this_page = FALSE, $dontshow = FALSE)
         {
             $menu_items = array();
 
@@ -39,26 +45,23 @@ class analytics {
                     );	
             }
 
-
             // create a new view
             $analytics_tab = View::factory( 'analytics_tab' );
 
+            // Populate tabs
             $analytics_tab->menu_items = $menu_items;
 
             // render view
             $analytics_tab->render( TRUE );
         }
 
+        /**
+         * Add flot charts to ushahidi
+         */
         public function add_flotjs()
         {
             $js = View::factory('flot_js');
             $js->render(TRUE);
-        }
-
-        public function get_categories(){
-            $incidents = reports::fetch_incidents(TRUE);
-
-            echo "$incidents";
         }
 }
 
