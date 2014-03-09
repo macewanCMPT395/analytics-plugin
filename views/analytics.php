@@ -1,36 +1,4 @@
 <script type="text/javascript"><?php echo "$chart"; ?></script>
-<style>
-#analytic-tabs ul {
-    padding: 1em;
-    clear: both;
-}
-
-#analytic-tabs li {
-    list-style-type: none;
-    background-color: #c2c2c2;
-    float: left;
-    margin: 1em;
-    padding: 1em;
-}
-
-#analytic-tabs li:hover {
-    background-color: #008cff;
-}
-
-#analytic-tabs a {
-    color: #fff;
-    font-weight: bold;
-    text-decoration: none;
-}
-
-#analytic-tabs div {
-    text-align: left;
-    float: center;
-    clear: both;
-    width: 100%;
-}
-
-</style>
 <div id="content">
 	<div class="content-bg">
 		<!-- start analytics block -->
