@@ -34,12 +34,24 @@ class Analytics_json_Controller extends Controller {
         $this->render_analytics_json( $json_features );
     }
 
+    /**
+     * Get json linechart formatting
+     */
     public function linechart_json( $type = 0 )
     {
         $json_features = $this->create_linechart_json( $type );
         $this->render_analytics_json( $json_features );
     }
 
+    public function get()
+    {
+        $json_features = $this->create_filtered_piechart();
+        $this->render_analytics_json( $json_features );
+    }
+
+    /**
+     * Render JSON object from php array
+     */
     public function render_analytics_json( $json_features )
     {
         $json = json_encode( array(
@@ -52,6 +64,9 @@ class Analytics_json_Controller extends Controller {
         echo $json;
     }
 
+    /**
+     * Create pie chart formatting
+     */
     protected function create_piechart_json()
     {
         $db = new Analytics_Model;
@@ -77,8 +92,7 @@ class Analytics_json_Controller extends Controller {
 
     /**
      * Create a JSON object
-     *
-     * @param type the type of linechart to create: 0 = daily, 1 = total
+     * * @param type the type of linechart to create: 0 = daily, 1 = total
      * @return a JSON object with the desired data to be rendered
      */
     protected function create_linechart_json( $type = 0 )
@@ -105,20 +119,10 @@ class Analytics_json_Controller extends Controller {
                 $total += $count;
 
                 // select data set
-                if( $type == 0 )
-                {
-                    $json_item = array(
-                        $timestamp,
-                        $count
-                    );
-                }
-                else
-                {
-                    $json_item = array(
-                        $timestamp,
-                        $total
-                    );
-                }
+                $json_item = array(
+                    $timestamp,
+                    $type ? $total : $count
+                );
 
                 array_push($json_category_data, $json_item);
             }
@@ -136,4 +140,50 @@ class Analytics_json_Controller extends Controller {
 
         return $json;
     }
+
+    /**
+     * Validate filter results
+     *
+     * @param filter an array of filters
+     */
+    protected function validate_filter( $filter )
+    {
+        var_dump( $filter ); 
+
+        return true; 
+    }
+
+    /**
+     * Get filtered results
+     */
+    public function create_filtered_piechart()
+    {
+        $db = new Analytics_Model;
+
+        // Parse query string
+        parse_str( ltrim( Router::$query_string, "?" ), $filters );
+
+        // Check that filters are valid
+        if( ! $this->validate_filter( $filters ) )
+        {
+            echo "INVALID FILTERS";
+            return null;
+        }
+
+        // Query database
+        $results = $db->get_by_filter( $filters );
+
+        var_dump( $results );
+
+        // Form JSON results
+        $json = array();
+        foreach( $results as $filter => $val )
+        {
+            var_dump( $filter );                        
+            var_dump( $val );                        
+        }
+
+        return $json;
+    }
+
 } // End Main
