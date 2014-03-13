@@ -225,6 +225,23 @@ class Analytics_Model extends Model {
                         }
                     }
                 }
+
+                // Select verified incidents
+                if( array_key_exists( 'incidentVerified', $filter ) )
+                {
+                    if( ! empty( $filter[ 'incidentVerified' ] ) )
+                    {
+                        if( $is_start )
+                        {
+                            $sql .= "WHERE ".$prefix."incident.incident_verified = '".$filter['incidentVerified']."'";
+                            $is_start = false;
+                        }
+                        else
+                        {
+                            $sql .= "AND ".$prefix."incident.incident_verified = '".$filter['incidentVerified']."'";
+                        }
+                    }
+                }
                 
                 // Select country id's
                 if( array_key_exists( 'countryId', $filter ) )
@@ -261,7 +278,7 @@ class Analytics_Model extends Model {
                         }
                         else
                         {
-                            $sql .= 'AND ' . $prefix . 'category.id IN( ' . $in . ' ) ';
+                            $sql .= 'AND ' . $prefix . 'category.id IN( ' . $id_list . ' ) ';
                         }
                     }
 		}
