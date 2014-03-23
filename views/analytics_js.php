@@ -20,12 +20,14 @@ $( document ).ready( function (){
     //$('#all-time').hide();
     $('#daily-incidents').hide();
     $('#total-incidents').hide();
+    $('#d3tab').hide();
 
     $('#analytics-tab-0').click( function(){
         $('#all-time').hide();
         $('#daily-incidents').hide();
         $('#total-incidents').hide();
-
+        $('#d3tab').hide();
+        
         $('#all-time').show();
     });
 
@@ -33,7 +35,8 @@ $( document ).ready( function (){
         $('#all-time').hide();
         $('#daily-incidents').hide();
         $('#total-incidents').hide();
-
+        $('#d3tab').hide(); 
+        
         $('#daily-incidents').show();
     });
 
@@ -41,9 +44,21 @@ $( document ).ready( function (){
         $('#all-time').hide();
         $('#daily-incidents').hide();
         $('#total-incidents').hide();
+        $('#d3tab').hide();
         
         $('#total-incidents').show();
     });
+    
+    // d3 
+    $('#analytics-tab-3').click( function(){
+        $('#all-time').hide();
+        $('#daily-incidents').hide();
+        $('#total-incidents').hide();
+        $('#d3tab').hide();
+        
+        $('#d3tab').show();  
+    });
+          
 
     // Plot Pie Chart
     var pie_chart_url = '<?php echo url::base( FALSE ).'analytics_json/piechart_json/'; ?>';

@@ -24,6 +24,7 @@ class Analytics_Controller extends Main_Controller {
     {
         $this->template->header->this_page = 'analytics';
         $this->template->content = new View('analytics');
+        // $this->template->content->d3testview = new View ('d3testview');
 
         $this->template->header->page_title .= Kohana::lang('ui_main.analytics').Kohana::config('settings.title_delimiter');
 
