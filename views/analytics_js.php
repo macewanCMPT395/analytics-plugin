@@ -25,6 +25,7 @@ $( document ).ready( function (){
         $('#all-time').hide();
         $('#daily-incidents').hide();
         $('#total-incidents').hide();
+        $('#parellel-coords').hide();
     }
 
     hideCharts();
@@ -46,6 +47,12 @@ $( document ).ready( function (){
         hideCharts();
 
         $('#total-incidents').show();
+    });
+    
+    $('#analytics-tab-3').click( function(){
+        hideCharts();
+
+        $('#parellel-coords').show();
     });
 
     /**

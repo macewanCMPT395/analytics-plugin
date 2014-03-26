@@ -46,4 +46,18 @@ class Analytics_Model extends Model {
                 GROUP BY ".$prefix."incident.incident_date";
         return $this->db->query($sql);
     }
+    
+     public function get_incidents_table_D3_pc()
+    {
+        $p = $this->db->table_prefix();        
+        $sql = "SELECT category_id AS Category,
+        latitude AS Latitude,longitude As Longitude, incident_active AS Active,
+        incident_verified AS Verified, incident_date AS 'Date'
+        FROM ".$p."`incident`, ".$p."`location`, ".$p."`incident_category`
+        WHERE ".$p."incident.id = ".$p."incident_category.incident_id
+        AND ".$p."incident.location_id = ".$p."location.id
+        ORDER BY ".$p."`incident`.`id` ASC";
+        return $this->db->query($sql);
+    }
+
 }
