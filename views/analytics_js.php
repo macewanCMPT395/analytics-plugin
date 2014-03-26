@@ -76,7 +76,7 @@ $( document ).ready( function (){
 
         if( typeof( circleInnerRadius ) === 'undefined' )
             circleInnerRadius = 0;
-
+        
         if( typeof( showLegend ) === 'undefined' )
             showLegend = true;
 

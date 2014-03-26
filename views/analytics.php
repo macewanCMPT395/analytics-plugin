@@ -75,4 +75,4 @@ svg {
 		</div>
 		<!-- end analytics block -->
 	</div>
-</div>
+                </div>
