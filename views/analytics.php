@@ -72,7 +72,7 @@ svg {
                             <!-- end D3-incidents block -->
                         </div>
                         <!-- end analytic-tabs block -->
-		</div>
-		<!-- end analytics block -->
-	</div>
                 </div>
+                <!-- end analytics block -->
+        </div>
+</div>
