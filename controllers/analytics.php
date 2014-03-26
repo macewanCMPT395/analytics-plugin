@@ -28,5 +28,6 @@ class Analytics_Controller extends Main_Controller {
         $this->template->header->page_title .= Kohana::lang('ui_main.analytics').Kohana::config('settings.title_delimiter');
 
         $this->template->content->chart = new View( 'analytics_js' );
+        $this->template->content->d3chart = new View( 'd3_js' );
     }
 } // End Main
