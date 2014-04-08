@@ -20,13 +20,14 @@ class Analytics_Controller extends Main_Controller {
 			parent::__construct();
 	}
 
-	public function index()
-	{
-		$this->template->header->this_page = 'analytics';
-		$this->template->content = new View('analytics');
+    public function index()
+    {
+        $this->template->header->this_page = 'analytics';
+        $this->template->content = new View('analytics');
+       
+        $this->template->header->page_title .= Kohana::lang('ui_main.analytics').Kohana::config('settings.title_delimiter');
 
-		$this->template->header->page_title .= Kohana::lang('ui_main.analytics').Kohana::config('settings.title_delimiter');
-
-		$this->template->content->chart = new View( 'analytics_js' );
-	}
+        $this->template->content->chart = new View( 'analytics_js' );
+        $this->template->content->d3chart = new View( 'd3_js' );
+    }
 } // End Main

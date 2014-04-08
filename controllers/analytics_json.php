@@ -186,4 +186,60 @@ class Analytics_json_Controller extends Controller {
 		return $json;
 	}
 
+    public function d3_para_coord_json()
+    {
+        $json_features = $this->create_d3_para_coord_json();
+        $this->render_d3_json( $json_features );
+    }
+    
+    public function render_d3_json( $json_features )
+    {
+        $json = json_encode( $json_features);
+
+        header( 'Content-type: application/json; charset=utf-8');
+
+        echo $json;
+    }
+
+    /**
+     * Create a JSON object
+     *
+     * @return a JSON object with the desired data to be rendered
+     */
+    protected function create_d3_para_coord_json()
+    {
+        $db = new Analytics_Model;
+        $search_time = 'Date (Unix)';
+	
+        // query database
+        $query = $db->get_incidents_table_D3_pc();
+
+        // create JSON object
+        $json_features = array();
+        foreach ( $query as $row )
+        {
+            $json_item = array();
+            foreach ( $row as $key => $value )
+            {
+
+		
+                if ( $key == $search_time )
+                {
+                    $json_item[ $key ] =   strtotime( $value )  ;
+		    //$json_item[ $key ] =  date('o-m', strtotime($value) ) ;
+                }
+                else
+                {
+                    $json_item[ $key ] = $value;
+                }
+		 
+		
+		// $json_item[ $key ] = $value;
+		 
+            }
+            array_push( $json_features, $json_item );
+        }
+        return $json_features;
+    }
+
 } // End Main
