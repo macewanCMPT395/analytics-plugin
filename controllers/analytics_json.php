@@ -160,8 +160,8 @@ class Analytics_json_Controller extends Controller {
     protected function create_d3_para_coord_json()
     {
         $db = new Analytics_Model;
-        $search_time = 'Date';
-
+        $search_time = 'Date (Unix)';
+	
         // query database
         $query = $db->get_incidents_table_D3_pc();
 
@@ -173,14 +173,20 @@ class Analytics_json_Controller extends Controller {
             foreach ( $row as $key => $value )
             {
 
+		
                 if ( $key == $search_time )
                 {
-                    $json_item[ $key ] = strtotime( +$value ) * 1000;
+                    $json_item[ $key ] =   strtotime( $value )  ;
+		    //$json_item[ $key ] =  date('o-m', strtotime($value) ) ;
                 }
                 else
                 {
-                    $json_item[ $key ] = +$value;
+                    $json_item[ $key ] = $value;
                 }
+		 
+		
+		// $json_item[ $key ] = $value;
+		 
             }
             array_push( $json_features, $json_item );
         }
