@@ -16,9 +16,9 @@ class analytics_helper_Core {
         $html = '';
         foreach( $chart_types as $chart_type )
         {
-            $html .= "<label>$chart_type";
+            $html .= "<label>";
             $html .= "<input class=\"$class\" type=\"$type\" name=\"$name\" value=\"$chart_type\" /><br />";
-            $html .= "</label>";
+            $html .= "$chart_type</label>";
         }
 
         return $html;
@@ -35,12 +35,12 @@ class analytics_helper_Core {
     public static function select_cumulative( $type, $name, $class )
     {
         $html = "";
-        $html .= "<label>true";
+        $html .= "<label>";
         $html .= "<input class=\"$class\" type=\"$type\" name=\"$name\" value=\"true\" /><br />";
-        $html .= "</label>";
-        $html .= "<label>false";
+        $html .= "Daily</label>";
+        $html .= "<label>";
         $html .= "<input class=\"$class\" type=\"$type\" name=\"$name\" value=\"false\" /><br />";
-        $html .= "</label>";
+        $html .= "Cumulative</label>";
 
         return $html;
     }
@@ -61,9 +61,9 @@ class analytics_helper_Core {
         $categories = $db->get_categories();
         foreach( $categories as $category )
         {
-            $html .= "<label>$category->category_title";
+            $html .= "<label>";
             $html .= "<input class=\"$class\" type=\"$type\" name=\"$name\" value=\"$category->category_id\" /><br />";
-            $html .= "</label>";
+            $html .= "$category->category_title</label>";
         }
 
         return $html;
@@ -85,9 +85,9 @@ class analytics_helper_Core {
         $countries = $db->get_countries();
         foreach( $countries as $country )
         {
-            $html .= "<label>$country->country_name";
+            $html .= "<label>";
             $html .= "<input class=\"$class\" type=\"$type\" name=\"$name\" value=\"$country->country_id\" /><br />";
-            $html .= "</label>";
+            $html .= "$country->country_name</label>";
         }
 
         return $html;
