@@ -22,7 +22,7 @@ class Analytics_Model extends Model {
                              .$prefix."category.category_description as category_description, "
                              .$prefix."category.category_color as category_color, "
                              .$prefix."category.category_trusted as category_trusted, "
-                             .$prefix."category.category_parent as category_parend ";
+                             .$prefix."category.parent_id as category_parent ";
             $sql .= "FROM ".$prefix."category ";
 
             if( ! empty( $category_id ) )
@@ -57,6 +57,8 @@ class Analytics_Model extends Model {
 
             return $this->db->query( $sql );
         }
+
+
 
 	public function get_incidents_grouped_by_id()
 	{
