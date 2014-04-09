@@ -9,11 +9,23 @@
 
         <div id="chart-filter-box">
             <form name="filters">
-                <?php echo analytics_helper::select_chart_type("radio", "chartType", "filter-box"); ?>
-                <?php echo analytics_helper::select_cumulative("radio", "cumulative", "filter-box"); ?>
-                <?php echo analytics_helper::select_category("checkbox", "categoryId", "filter-box"); ?>
-                <?php echo analytics_helper::select_country("checkbox", "countryId", "filter-box"); ?>
-                <input type="text" name="keyword" />
+                <div id="chart-type-filter-box" class="filter-box">
+                    <?php echo analytics_helper::select_chart_type("radio", "chartType", "filter-element"); ?>
+                </div>
+                <div id="chart-cumulative-filter-box" class="filter-box">
+                    <?php echo analytics_helper::select_cumulative("radio", "cumulative", "filter-element"); ?>
+                </div>
+                <div id="chart-category-filter-box" class="filter-box">
+                    <?php echo analytics_helper::select_category("checkbox", "categoryId", "filter-element"); ?>
+                </div>
+                <div id="chart-country-filter-box" class="filter-box">
+                    <?php echo analytics_helper::select_country("checkbox", "countryId", "filter-element"); ?>
+                </div>
+                <div id="chart-custom-filter-box" class="filter-box">
+                    <label>Custom Filter
+                        <input type="text" name="keyword" />
+                    </label>
+                </div>
                 <input type="submit" value="submit" />
             </form>
         </div> <!-- end chart-filter-box -->
