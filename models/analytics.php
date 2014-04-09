@@ -86,12 +86,16 @@ class Analytics_Model extends Model {
                     .$prefix."category.category_title AS category_title, "
                     .$prefix."category.category_description AS category_description, "
                     .$prefix."category.category_color AS category_color, "
-                    .$prefix."category.category_trusted AS category_trusted ";
+                    .$prefix."category.category_trusted AS category_trusted, ";
+            $sql .= $prefix."location.country_id AS country_id, "
+                   .$prefix."location.location_name AS location_name ";
             $sql .= "FROM ".$prefix."incident ";
             $sql .= "LEFT JOIN ".$prefix."incident_category ".
                     "ON ".$prefix."incident.id=".$prefix."incident_category.incident_id ".
                     "LEFT JOIN ".$prefix."category ".
-                    "ON ".$prefix."incident_category.category_id=".$prefix."category.id ";
+                    "ON ".$prefix."incident_category.category_id=".$prefix."category.id ".
+                    "LEFT JOIN ".$prefix."location ".
+                    "ON ".$prefix."incident.location_id=".$prefix."location.id ";
 
             $is_start = true;
             if( ! empty( $category_id ) )
@@ -130,6 +134,48 @@ class Analytics_Model extends Model {
             return $this->db->query( $sql );
         }
 
+        public function get_incidents_by_id( $keyword = null, $category_id = null, $country_id = null, $date_from = null, $date_to = null )
+        {
+		$prefix = $this->db->table_prefix();
+		$sql = "SELECT COUNT( ".$prefix."category.id ) AS count, ".$prefix."category.category_title, ".$prefix."category.category_color 
+				FROM ".$prefix."category 
+				JOIN ".$prefix."incident_category ON ".$prefix."category.id=".$prefix."incident_category.category_id 
+				JOIN ".$prefix."incident ON ".$prefix."incident_category.incident_id=".$prefix."incident.id ";
+                $is_start = true;
+                if( ! empty( $category_id ) )
+                {
+                    $sql .= ($is_start ? " WHERE " : " AND ").$prefix."category.id=".$category_id." ";
+                    $is_start = false;
+                }
+
+                if( ! empty( $country_id ) )
+                {
+                    $sql .= ($is_start ? " WHERE " : " AND ").$prefix."incident.location_id=".$country_id." ";
+                    $is_start = false;
+                }
+
+
+                if( ! empty( $date_from ) )
+                {
+                    $sql .= ($is_start ? " WHERE " : " AND ").$prefix."incident_date >= '".$date_from."' ";
+                    $is_start = false;
+                }
+
+                if( ! empty( $date_to ) )
+                {
+                    $sql .= ($is_start ? " WHERE " : " AND ").$prefix."incident_date <= '".$date_to."' ";
+                    $is_start = false;
+                }
+
+                if( ! empty( $keyword ) )
+                {
+                    $sql .= ($is_start ? " WHERE " : " AND ").$prefix."incident_title LIKE '%".$keyword."%' ";
+                    $is_start = false;
+                }
+
+	        $sql .= "GROUP BY ".$prefix."category.id ";
+		return $this->db->query($sql);
+        }
 
 	public function get_incidents_grouped_by_id()
 	{
