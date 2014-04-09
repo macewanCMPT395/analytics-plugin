@@ -6,6 +6,58 @@ class Analytics_Model extends Model {
 		parent::__construct(); 
 	}
 
+        /**
+         * Get categories
+         * 
+         * @param int $category_id the category id to select
+         * @return A list of the categories and their attributes
+         */
+        public function get_categories( $category_id = null )
+        {
+            $prefix = $this->db->table_prefix();    // get table prefix
+
+            $sql = '';
+            $sql .= "SELECT ".$prefix."category.id as category_id, "
+                             .$prefix."category.category_title as category_title, "
+                             .$prefix."category.category_description as category_description, "
+                             .$prefix."category.category_color as category_color, "
+                             .$prefix."category.category_trusted as category_trusted, "
+                             .$prefix."category.category_parent as category_parend ";
+            $sql .= "FROM ".$prefix."category ";
+
+            if( ! empty( $category_id ) )
+            {
+                $sql .= "WHERE ".$prefix."category.id=".$category_id;
+            }
+
+            return $this->db->query( $sql );
+        }
+
+        /**
+         * Get countries
+         *
+         * @param int $country_id the country id to select
+         * @return a list of the countries and their attributes
+         */
+        public function get_countries( $country_id = null )
+        {
+            $prefix = $this->db->table_prefix();    // get table prefix
+
+            $sql = '';
+            $sql .= "SELECT ".$prefix."country.id as country_id, "
+                             .$prefix."country.country as country_name, "
+                             .$prefix."country.capital as country_capital, "
+                             .$prefix."country.cities as country_cities ";
+            $sql .= "FROM ".$prefix."country ";
+
+            if( ! empty( $category_id ) )
+            {
+                $sql .= "WHERE ".$prefix."country.id=".$country_id;
+            }
+
+            return $this->db->query( $sql );
+        }
+
 	public function get_incidents_grouped_by_id()
 	{
 		$prefix = $this->db->table_prefix();
@@ -17,7 +69,7 @@ class Analytics_Model extends Model {
 		return $this->db->query($sql);
 	}
 
-	public function get_categories( $category_id = -1 )
+	public function _get_categories( $category_id = -1 )
 	{
 		$prefix = $this->db->table_prefix();
 		if( $category_id == -1 )
