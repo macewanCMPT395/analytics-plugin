@@ -17,8 +17,8 @@ class analytics_helper_Core {
         foreach( $chart_types as $chart_type )
         {
             $html .= "<label>";
-            $html .= "<input class=\"$class\" type=\"$type\" name=\"$name\" value=\"$chart_type\" /><br />";
-            $html .= "$chart_type</label>";
+            $html .= "<input class=\"$class\" type=\"$type\" name=\"$name\" value=\"$chart_type\" />";
+            $html .= "$chart_type</label><br />";
         }
 
         return $html;
@@ -36,11 +36,11 @@ class analytics_helper_Core {
     {
         $html = "";
         $html .= "<label>";
-        $html .= "<input class=\"$class\" type=\"$type\" name=\"$name\" value=\"true\" /><br />";
-        $html .= "Daily</label>";
+        $html .= "<input class=\"$class\" type=\"$type\" name=\"$name\" value=\"true\" />";
+        $html .= "Daily</label><br />";
         $html .= "<label>";
-        $html .= "<input class=\"$class\" type=\"$type\" name=\"$name\" value=\"false\" /><br />";
-        $html .= "Cumulative</label>";
+        $html .= "<input class=\"$class\" type=\"$type\" name=\"$name\" value=\"false\" />";
+        $html .= "Cumulative</label><br />";
 
         return $html;
     }
@@ -62,8 +62,8 @@ class analytics_helper_Core {
         foreach( $categories as $category )
         {
             $html .= "<label>";
-            $html .= "<input class=\"$class\" type=\"$type\" name=\"$name\" value=\"$category->category_id\" /><br />";
-            $html .= "$category->category_title</label>";
+            $html .= "<input class=\"$class\" type=\"$type\" name=\"$name\" value=\"$category->category_id\" />";
+            $html .= "$category->category_title</label><br />";
         }
 
         return $html;
@@ -86,8 +86,8 @@ class analytics_helper_Core {
         foreach( $countries as $country )
         {
             $html .= "<label>";
-            $html .= "<input class=\"$class\" type=\"$type\" name=\"$name\" value=\"$country->country_id\" /><br />";
-            $html .= "$country->country_name</label>";
+            $html .= "<input class=\"$class\" type=\"$type\" name=\"$name\" value=\"$country->country_id\" />";
+            $html .= "$country->country_name</label><br />";
         }
 
         return $html;
