@@ -55,7 +55,18 @@ class analytics_helper_Core {
      */
     public static function select_category( $type, $name, $class )
     {
+        $db = new Analytics_Model;  
 
+        $html = '';
+        $categories = $db->get_categories();
+        foreach( $categories as $category )
+        {
+            $html .= "<label>$category->category_title";
+            $html .= "<input class=\"$class\" type=\"$type\" name=\"$name\" value=\"$category->category_id\" />";
+            $html .= "</label>";
+        }
+
+        return $html;
     }
 
     /**
@@ -68,6 +79,17 @@ class analytics_helper_Core {
      */
     public static function select_country( $type, $name, $class )
     {
-        
+        $db = new Analytics_Model;  
+
+        $html = '';
+        $countries = $db->get_countries();
+        foreach( $countries as $country )
+        {
+            $html .= "<label>$country->country_name";
+            $html .= "<input class=\"$class\" type=\"$type\" name=\"$name\" value=\"$country->country_id\" />";
+            $html .= "</label>";
+        }
+
+        return $html;
     }
 }
