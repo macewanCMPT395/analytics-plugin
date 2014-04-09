@@ -68,7 +68,7 @@ class Analytics_Model extends Model {
          * @param datetime $date_to a date to stop at
          * @return incidents by category
          */
-        public function get_incidents_by_category( $keyword = null, $category_id = null, $group_by_country = false, $date_from = null, $date_to = null)
+        public function get_incidents( $keyword = null, $category_id = array(), $country_id = array(), $group_by_country = false, $date_from = null, $date_to = null)
         {
             $prefix = $this->db->table_prefix();
 
@@ -118,7 +118,7 @@ class Analytics_Model extends Model {
 
             if( ! empty( $keyword ) )
             {
-                $sql .= ($is_start ? " WHERE " : " AND ").$prefix."incident_title LIKE '%".$keyword."%' ";
+                $sql .= ($is_start ? " WHERE " : " AND ").$prefix."incident_description LIKE '%".$keyword."%' ";
                 $is_start = false;
             }
 
@@ -134,23 +134,31 @@ class Analytics_Model extends Model {
             return $this->db->query( $sql );
         }
 
-        public function get_incidents_by_id( $keyword = null, $category_id = null, $country_id = null, $date_from = null, $date_to = null )
+        public function get_incidents_by_id( $keyword = null, $category_id = array(), $country_id = array(), $date_from = null, $date_to = null )
         {
 		$prefix = $this->db->table_prefix();
-		$sql = "SELECT COUNT( ".$prefix."category.id ) AS count, ".$prefix."category.category_title, ".$prefix."category.category_color 
+		$sql = "SELECT COUNT( ".$prefix."category.id ) AS incident_count, "
+                                       .$prefix."category.category_title AS category_title, "
+                                       .$prefix."category.category_color AS category_color, "
+                                       .$prefix."incident.location_id AS location_id, "
+                                       .$prefix."location.country_id AS country_id, "
+                                       .$prefix."location.location_name AS location_name 
 				FROM ".$prefix."category 
 				JOIN ".$prefix."incident_category ON ".$prefix."category.id=".$prefix."incident_category.category_id 
-				JOIN ".$prefix."incident ON ".$prefix."incident_category.incident_id=".$prefix."incident.id ";
+				JOIN ".$prefix."incident ON ".$prefix."incident_category.incident_id=".$prefix."incident.id 
+                                JOIN ".$prefix."location ON ".$prefix."incident.location_id=".$prefix."location.id ";
                 $is_start = true;
                 if( ! empty( $category_id ) )
                 {
-                    $sql .= ($is_start ? " WHERE " : " AND ").$prefix."category.id=".$category_id." ";
+                    $category_in = implode( ', ', $category_id );
+                    $sql .= ($is_start ? " WHERE " : " AND ").$prefix."category.id IN(".$category_in.") ";
                     $is_start = false;
                 }
 
                 if( ! empty( $country_id ) )
                 {
-                    $sql .= ($is_start ? " WHERE " : " AND ").$prefix."incident.location_id=".$country_id." ";
+                    $country_in = implode( ", ", $country_id );
+                    $sql .= ($is_start ? " WHERE " : " AND ").$prefix."incident.location_id IN(".$country_in.") ";
                     $is_start = false;
                 }
 
