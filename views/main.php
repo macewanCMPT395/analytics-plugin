@@ -9,10 +9,10 @@
 
         <div id="chart-filter-box">
             <form name="filters">
-                <?php echo analytics_helper::select_chart_type( "filters", "radio", "chartType", true ); ?>
-                <?php echo analytics_helper::select_cumulative( "filters", "radio", "cumulative", true ); ?>
-                <?php echo analytics_helper::select_category( "filters", "checkbox", "categoryId", true ); ?>
-                <?php echo analytics_helper::select_country( "filters", "checkbox", "countryId", true ); ?>
+                <?php echo analytics_helper::select_chart_type("radio", "chartType", "filter-box"); ?>
+                <?php echo analytics_helper::select_cumulative("radio", "cumulative", "filter-box"); ?>
+                <?php echo analytics_helper::select_category("checkbox", "categoryId", "filter-box"); ?>
+                <?php echo analytics_helper::select_country("checkbox", "countryId", "filter-box"); ?>
                 <input type="text" name="keyword" />
                 <input type="submit" value="submit" />
             </form>
