@@ -10,8 +10,8 @@
 }
 
 .filter-box {
-    width: 180px;
-    height: 200px;
+    width: 200px;
+    height: 300px;
     overflow: scroll;
 }
 </style>
@@ -38,12 +38,12 @@
 
                 <h2>Category</h2>
                 <div id="chart-category-filter-box" class="filter-box">
-                    <?php echo analytics_helper::select_category("checkbox", "categoryId", "filter-element"); ?>
+                    <?php echo analytics_helper::select_category("checkbox", "categoryId[]", "filter-element"); ?>
                 </div>
 
                 <h2>Country</h2>
                 <div id="chart-country-filter-box" class="filter-box">
-                    <?php echo analytics_helper::select_country("checkbox", "countryId", "filter-element"); ?>
+                    <?php echo analytics_helper::select_country("checkbox", "countryId[]", "filter-element"); ?>
                 </div>
 
                 <h2>Keyword</h2>
