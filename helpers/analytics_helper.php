@@ -17,7 +17,7 @@ class analytics_helper_Core {
         foreach( $chart_types as $chart_type )
         {
             $html .= "<label>$chart_type";
-            $html .= "<input class=\"$class\" type=\"$type\" name=\"$name\" value=\"$chart_type\" />";
+            $html .= "<input class=\"$class\" type=\"$type\" name=\"$name\" value=\"$chart_type\" /><br />";
             $html .= "</label>";
         }
 
@@ -36,10 +36,10 @@ class analytics_helper_Core {
     {
         $html = "";
         $html .= "<label>true";
-        $html .= "<input class=\"$class\" type=\"$type\" name=\"$name\" value=\"true\" />";
+        $html .= "<input class=\"$class\" type=\"$type\" name=\"$name\" value=\"true\" /><br />";
         $html .= "</label>";
         $html .= "<label>false";
-        $html .= "<input class=\"$class\" type=\"$type\" name=\"$name\" value=\"false\" />";
+        $html .= "<input class=\"$class\" type=\"$type\" name=\"$name\" value=\"false\" /><br />";
         $html .= "</label>";
 
         return $html;
@@ -62,7 +62,7 @@ class analytics_helper_Core {
         foreach( $categories as $category )
         {
             $html .= "<label>$category->category_title";
-            $html .= "<input class=\"$class\" type=\"$type\" name=\"$name\" value=\"$category->category_id\" />";
+            $html .= "<input class=\"$class\" type=\"$type\" name=\"$name\" value=\"$category->category_id\" /><br />";
             $html .= "</label>";
         }
 
@@ -86,7 +86,7 @@ class analytics_helper_Core {
         foreach( $countries as $country )
         {
             $html .= "<label>$country->country_name";
-            $html .= "<input class=\"$class\" type=\"$type\" name=\"$name\" value=\"$country->country_id\" />";
+            $html .= "<input class=\"$class\" type=\"$type\" name=\"$name\" value=\"$country->country_id\" /><br />";
             $html .= "</label>";
         }
 
