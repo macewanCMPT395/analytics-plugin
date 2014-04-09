@@ -231,55 +231,70 @@ class Analytics_json_Controller extends Controller {
                 $date_to = $filters[ 'dateTo' ];
             }
 
-            // for each category create a data series
-            $categories = $db->get_categories();
-            foreach( $categories as $category )
+            if( $chart_type == "pie" )
             {
-                if( ! empty($category_id) AND ! in_array( $category->category_id, $category_id ) )
-                {
-                    continue;
-                }
-                
-                $incidents = $db->get_incidents_by_category( $keyword, $category->category_id, false, $date_from, $date_to );
-                $total = 0;
+		// query database
+		$incidents = $db->get_incidents_by_id( $keyword, $category_id, $country_id, $date_from, $date_to );
 
+		// create JSON object
+		$series = array();
+		foreach( $incidents as $incident )
+		{
+                    $data = array(
+                            'label' => $incident->category_title,
+                            'data' => (int)$incident->incident_count
+                    );
 
-                // create data points
-                $raw_data = array();
-                foreach( $incidents as $incident )
+                    array_push($series, $data);
+		}
+
+		return $series;
+            }
+            else
+            {
+                // for each category create a data series
+                $categories = $db->get_categories();
+                foreach( $categories as $category )
                 {
-                    if( ! empty($country_id) AND ! in_array( $incident->incident_location, $country_id ) )
+                    if(  ! empty($category_id) AND ! in_array( $category->category_id, $category_id ) )
                     {
                         continue;
                     }
-
-                    $timestamp = strtotime( $incident->incident_date ) * 1000;
-                    $count = (int)$incident->incident_count;
-                    $total += $count;
                     
-                    if( $chart_type == "pie" )
+                    $incidents = $db->get_incidents( $keyword, $category->category_id, null,  false, $date_from, $date_to );
+                    $total = 0;
+
+                    // create data points
+                    $raw_data = array();
+                    foreach( $incidents as $incident )
                     {
-                        $data = array( $total );
-                    }
-                    else
-                    {
+
+                        if( ! empty($country_id) AND ! in_array( $incident->country_id, $country_id ) )
+                        {
+                            continue;
+                        }
+
+                        $timestamp = strtotime( $incident->incident_date ) * 1000;
+                        $count = (int)$incident->incident_count;
+                        $total += $count;
+                        
                         $data = array(
                             $timestamp,
                             $cumulative ? $count : $total
                         );
+
+                        array_push( $raw_data, $data );
                     }
 
-                    array_push( $raw_data, $data );
+                    // Create series labels
+                    $series = array(
+                        'label' => $category->category_title,
+                        'color' => $category->category_color,
+                        'data'  => $raw_data
+                    );
+
+                    array_push( $chart_data, $series );
                 }
-
-                // Create series labels
-                $series = array(
-                    'label' => $category->category_title,
-                    'color' => $category->category_color,
-                    'data'  => $raw_data
-                );
-
-                array_push( $chart_data, $series );
             }
 
             return $chart_data;
