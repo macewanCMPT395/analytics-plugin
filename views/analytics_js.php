@@ -1,59 +1,4 @@
-<?php 
-/**
- * Analytics scripting
-
- * PHP version 5
- * LICENSE: This source file is subject to LGPL license 
- * that is available through the world-wide-web at the following URI:
- * http://www.gnu.org/copyleft/lesser.html
- * @author     Kundi Bora Team
- * @package    Ushahidi - http://source.ushahididev.com
- * @subpackage Analytics
- * @copyright  Ushahidi - http://www.ushahidi.com
- * @license    http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL) 
- */
- ?>
-
 $( document ).ready( function (){
-
-    /**
-     * Tab functionality
-     *
-     * @note jquery ui widget does not work
-     */
-    function hideCharts(){
-        $('#all-time').hide();
-        $('#daily-incidents').hide();
-        $('#total-incidents').hide();
-        $('#parellel-coords').hide();
-    }
-
-    hideCharts();
-    $('#all-time').show();
-
-    $('#analytics-tab-0').click( function(){
-        hideCharts();
-
-        $('#all-time').show();
-    });
-
-    $('#analytics-tab-1').click( function(){
-        hideCharts();
-
-        $('#daily-incidents').show();
-    });
-
-    $('#analytics-tab-2').click( function(){
-        hideCharts();
-
-        $('#total-incidents').show();
-    });
-    
-    $('#analytics-tab-3').click( function(){
-        hideCharts();
-
-        $('#parellel-coords').show();
-    });
 
     /**
      * Generate pie chart options
@@ -310,7 +255,71 @@ $( document ).ready( function (){
         });
     }
 
-    displayPieChart( '#chart-all-time' );
-    displayLineChart( '#chart-total-incidents' );
-    displayBarChart( '#chart-daily-incidents' );
+    // Get query string value
+    // NOTE: stackoverflow.com/questions/4656843/jquery-get-querystring-from-url
+    function getVars( queryString )
+    {
+        var vars = [], hash;
+        var hashes = queryString.slice( queryString.indexOf('?') + 1 ).split( '&' );
+        
+        for( var i = 0; i < hashes.length; i++ )
+        {
+            hash = hashes[i].split('=');
+            vars.push(hash[0]);
+            vars[hash[0]] = hash[1];
+        }
+
+        return vars;
+    }
+
+    // Create filter accoridion
+    $('#chart-filter-box').accordion({ collapsible: true, heightStyle: "content" });
+
+    // Handle submit button
+    $('#filter').submit( function( event ){
+        event.preventDefault();
+        event.stopPropagation();
+
+        // Get query string
+        var query_string = $('#filter').serialize();
+        var url ='<?php echo url::base(TRUE)."analytics_json/get"; ?>';
+
+        // Generate charts
+        $.ajax({
+            url: url,
+            data: query_string
+        }).success( function(data){
+                // Gather all data series to plot 
+                var d = [];
+                $(data['chartData']).each( function( i ){
+                    d.push({ 
+                        data: data['chartData'][i]['data'], 
+                        label: data['chartData'][i]['label'] 
+                    });
+                });
+
+                // Plot chart
+
+                if( getVars( query_string )["chartType"] === "pie" )
+                {
+                    displayPieChart( "#chart-window", url );     
+                }
+                else if( getVars( query_string )["chartType"] == "line" )
+                {
+                    //var options = generateChartOptions();
+                    //var plot = $.plot("#chart-window", d, options );
+                    displayLineChart( "#chart-window", url );
+                }
+                else
+                {
+                    displayBarChart( "#chart-window", url );
+                }
+                
+                var overview = $.plot( "$chart-overview", d, options );
+        }).fail( function(){
+            alert( "failed" );    
+        });
+
+    });
 });
+
