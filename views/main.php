@@ -66,11 +66,11 @@
                     <div id="chart-date-filter-box" class="filter-box">
                         <label>
                             Date from
-                            <input type="text" id="date-from" />
+                            <input type="text" id="date-from" name="dateFrom" />
                         </label><br />
                         <label>
                             Date to
-                            <input type="text" id="date-to" />
+                            <input type="text" id="date-to" name="dateTo" />
                         </label><br />
                     </div>
 
