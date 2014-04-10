@@ -30,7 +30,6 @@
     clear: both;
 }
 </style>
-<script type="text/javascript"><?php echo $chart; ?></script> 
 <div id="content">
     <div id="analytics" >
         <div id="chart" >

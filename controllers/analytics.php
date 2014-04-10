@@ -23,8 +23,8 @@ class Analytics_Controller extends Main_Controller {
     public function index()
     {
         $this->template->header->this_page = 'analytics';
-        //$this->template->content = new View('analytics');
-        $this->template->content = new View('main');
+        $this->template->content = new View('analytics');
+        $this->template->content->filter_chart = new View('main');
        
         $this->template->header->page_title .= Kohana::lang('ui_main.analytics').Kohana::config('settings.title_delimiter');
 
