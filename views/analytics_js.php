@@ -275,6 +275,17 @@ $( document ).ready( function (){
     // Create filter accoridion
     $('#chart-filter-box').accordion({ collapsible: true, heightStyle: "content" });
 
+    // Add date picker to form
+    $("#date-from").datepicker({
+        changeMonth: true,
+        changeYear: true
+    });
+
+    $("#date-to").datepicker({
+        changeMonth: true,
+        changeYear: true
+    });
+
     // Handle submit button
     $('#filter').submit( function( event ){
         event.preventDefault();
