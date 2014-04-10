@@ -1,19 +1,15 @@
 <script type="text/javascript"><?php echo "$d3chart"; ?></script>
 <script type="text/javascript"><?php echo $chart; ?></script> 
-<!-- script style css here-->
 <?php echo html::stylesheet( 'plugins/analytics/media/css/d3.parcoords.css', 'screen', FALSE ); ?>
-<style type='test/css'>
-</style>
 <div id="content">
     <div class="content-bg">
-	<!-- start analytics block -->
 	<div class="big-block">
 	    <h1><?php echo Kohana::lang( 'ui_main.analytics' ); ?></h1>
 
 	    <div id="analytic-tabs">
 		<ul>
-		    <li><a id="analytics-tab-0" class="analytics-tab" href="#filter-view">Charts</a></li>
-		    <li><a id="analytics-tab-1" class="analytics-tab" href="#parellel-coords">Parallel Coordinates</a></li>
+		    <li class="tab"><a id="analytics-tab-0" class="analytics-tab" href="#filter-view">Charts</a></li>
+		    <li class="tab"><a id="analytics-tab-1" class="analytics-tab" href="#parellel-coords">Parallel Coordinates</a></li>
 		</ul>
 
 		<div id="filter-view">
@@ -31,6 +27,5 @@
 	    </div>
 	    <!-- end analytic-tabs block -->
 	</div>
-	<!-- end analytics block -->
     </div>
 </div>

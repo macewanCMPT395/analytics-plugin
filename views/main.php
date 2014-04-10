@@ -1,36 +1,4 @@
-<style>
-
-#analytics {
-    overflow: hidden;
-}
-
-#chart {
-    float: left;
-    width: 80%;
-}
-
-#chart-filter {
-    float: left;
-    width: 20%;
-}
-
-#chart-filter-box {
-    float: right;
-    clear: right;
-}
-
-.filter-box {
-    width: 100%;
-    height: 300px;
-    overflow: scroll;
-}
-
-#chart-window #chart-overview {
-    float: left;
-    clear: both;
-}
-</style>
-
+<?php echo html::stylesheet( 'plugins/analytics/media/css/filter_view', 'screen', FALSE ); ?>
 <div id="analytics" >
     <div id="chart" >
         <div id="chart-window" style="width:100%;height:600px;"></div>
