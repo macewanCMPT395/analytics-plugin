@@ -36,7 +36,7 @@ function generatePieChartOptions( circleRadius, circleInnerRadius, showLegend, s
         labelColor = '#000';
 
     if( typeof( labelOpacity ) === 'undefined' )
-        opacity = 0.08;
+        opacity = 0.1;
 
     // Create options
     var options = {
@@ -354,7 +354,7 @@ $( document ).ready( function (){
                 // Plot chart
                 if( getVars( query_string )["chartType"] === "pie" )
                 {
-                    var options = generatePieChartOptions();
+                    var options = generatePieChartOptions('auto', 0, false );
                     plot = $.plot( "#chart-window", d, options );
 
                     $('#chart-overview').hide();
