@@ -1,6 +1,7 @@
 <script type="text/javascript"><?php echo "$d3chart"; ?></script>
 <script type="text/javascript"><?php echo $chart; ?></script> 
 <?php echo html::stylesheet( 'plugins/analytics/media/css/d3.parcoords.css', 'screen', FALSE ); ?>
+<?php echo html::stylesheet( 'plugins/analytics/media/css/analytics', 'screen', FALSE ); ?>
 <div id="content">
     <div class="content-bg">
 	<div class="big-block">
