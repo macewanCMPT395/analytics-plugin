@@ -62,6 +62,18 @@
                         <?php echo analytics_helper::select_country("checkbox", "countryId[]", "filter-element"); ?>
                     </div>
 
+                    <h2>Date</h2>
+                    <div id="chart-date-filter-box" class="filter-box">
+                        <label>
+                            Date from
+                            <input type="text" id="date-from" />
+                        </label><br />
+                        <label>
+                            Date to
+                            <input type="text" id="date-to" />
+                        </label><br />
+                    </div>
+
                     <h2>Keyword</h2>
                     <div id="chart-custom-filter-box" class="filter-box">
                         <label> 
