@@ -272,6 +272,7 @@ function getVars( queryString )
 
 $( document ).ready( function (){
     $("#parellel-coords").hide();
+    $('#chart-type-filter-box input[value="bar"]').hide();
 
     // Tabs
     // NOTE: jquery ui tabs is missing
@@ -354,16 +355,15 @@ $( document ).ready( function (){
                 if( getVars( query_string )["chartType"] === "pie" )
                 {
                     var options = generatePieChartOptions();
-                    var plot = $.plot( "#chart-window", d, options );
+                    plot = $.plot( "#chart-window", d, options );
+
+                    $('#chart-overview').hide();
                 }
                 else if( getVars( query_string )["chartType"] == "line" )
                 {
-                    // Unbind plots
-                    $("#chart-window").unbind();
-                    $("#chart-overview").unbind();
+                    $('#chart-overview').show();
 
                     // Plot main line chart
-                    //var options = generateChartOptions();
                     var options = {
                         xaxis: {
                             mode: "time",
