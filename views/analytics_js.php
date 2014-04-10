@@ -278,13 +278,24 @@ $( document ).ready( function (){
     // Add date picker to form
     $("#date-from").datepicker({
         changeMonth: true,
-        changeYear: true
+        changeYear: true,
+        dateFormat: "yy-mm-dd",
+        altFormat: "yy-mm-dd",
+        yearRange: "c-20:c+0",
+        minDate: null
     });
 
     $("#date-to").datepicker({
         changeMonth: true,
-        changeYear: true
+        changeYear: true,
+        dateFormat: "yy-mm-dd",
+        altFormat: "yy-mm-dd",
+        yearRange: "c-20:c+0",
+        maxDate: 0
     });
+
+    var plot;
+    var plot_overview;
 
     // Handle submit button
     $('#filter').submit( function( event ){
@@ -303,10 +314,27 @@ $( document ).ready( function (){
                 // Gather all data series to plot 
                 var d = [];
                 $(data['chartData']).each( function( i ){
-                    d.push({ 
-                        data: data['chartData'][i]['data'], 
-                        label: data['chartData'][i]['label'] 
-                    });
+                    if( getVars( query_string )["chartType"] === "bar" )
+                    {
+                        d.push({
+                            data: data['chartData'][i]['data'], 
+                            label: data['chartData'][i]['label'] ,
+                            bars: {
+                                show: true,
+                                fill: true,
+                                lineWidth: 1,
+                                barWidth: 12*24*60*60,
+                                fillColor: d['chartData'][i]['color']
+                            }
+                        });
+                    }
+                    else
+                    {
+                        d.push({ 
+                            data: data['chartData'][i]['data'], 
+                            label: data['chartData'][i]['label'] 
+                        });
+                    }
                 });
 
                 // Plot chart
@@ -317,13 +345,146 @@ $( document ).ready( function (){
                 }
                 else if( getVars( query_string )["chartType"] == "line" )
                 {
-                    var options = generateChartOptions();
-                    var plot = $.plot("#chart-window", d, options );
+                    // Unbind plots
+                    $("#chart-window").unbind();
+                    $("#chart-overview").unbind();
+
+                    // Plot main line chart
+                    //var options = generateChartOptions();
+                    var options = {
+                        xaxis: {
+                            mode: "time",
+                            tickLength: 5
+                        },
+                        selection: {
+                            mode: "x"
+                        },
+                        grid: {
+                            //markings: 
+                        },
+                        legend: {
+                            position: "nw",
+                            backgroundOpacity: 0
+                        }
+                    };
+
+                    plot = $.plot("#chart-window", d, options );
+
+                    // Plot chart overview
+                    var overview_options = {
+                        series: {
+                            lines: {
+                                show: true,
+                                lineWidth: 1
+                            },
+                            shadowSize: 0
+                        },
+                        xaxis: {
+                            ticks: [],
+                            mode: "time"
+                        },
+                        yaxis: {
+                            ticks: [],
+                            min: 0,
+                            autoscaleMargin: 0.1
+                        },
+                        selection: {
+                            mode: "x"
+                        },
+                        legend: {
+                            show: false
+                        }
+                    };
+
+                    plot_overview = $.plot( "#chart-overview", d, overview_options );
+
+                    // Bind the charts together
+
+                    $("#chart-window").bind("plotselected", function( event, ranges ){
+                        // Zoom
+                        plot = $.plot( "#chart-window", d, $.extend( true, {}, options, {
+                            xaxis: {
+                                min: ranges.xaxis.from,
+                                max: ranges.xaxis.to
+                            }
+                        }));
+
+                        // Dont fire event on overview
+                        plot_overview.setSelection( ranges, true );
+                    });
+
+                    $("#chart-overview").bind("plotselected", function( event, ranges ){
+                        plot.setSelection( ranges );
+                    });
                 }
                 else
                 {
-                    var options = generateChartOptions();
-                    var plot = $.plot("#chart-window", d, options );
+                    // Plot main bar chart
+                    var options = {
+                        xaxis: {
+                            mode: "time",
+                            tickLength: 5
+                        },
+                        selection: {
+                            mode: "x"
+                        },
+                        grid: {
+                            //markings: 
+                        },
+                        legend: {
+                            position: "nw",
+                            backgroundOpacity: 0
+                        }
+                    };
+
+                    plot = $.plot("#chart-window", d, options );
+
+                    // Plot chart overview
+                    var overview_options = {
+                        series: {
+                            lines: {
+                                show: true,
+                                lineWidth: 1
+                            },
+                            shadowSize: 0
+                        },
+                        xaxis: {
+                            ticks: [],
+                            mode: "time"
+                        },
+                        yaxis: {
+                            ticks: [],
+                            min: 0,
+                            autoscaleMargin: 0.1
+                        },
+                        selection: {
+                            mode: "x"
+                        },
+                        legend: {
+                            show: false
+                        }
+                    };
+
+                    plot_overview = $.plot( "#chart-overview", d, overview_options );
+
+                    // Bind the charts together
+
+                    $("#chart-window").bind("plotselected", function( event, ranges ){
+                        // Zoom
+                        plot = $.plot( "#chart-window", d, $.extend( true, {}, options, {
+                            xaxis: {
+                                min: ranges.xaxis.from,
+                                max: ranges.xaxis.to
+                            }
+                        }));
+
+                        // Dont fire event on overview
+                        plot_overview.setSelection( ranges, true );
+                    });
+
+                    $("#chart-overview").bind("plotselected", function( event, ranges ){
+                        plot.setSelection( ranges );
+                    });
                 }
                 
         }).fail( function(){
@@ -332,6 +493,7 @@ $( document ).ready( function (){
 
     });
 
-    displayPieChart( "#chart-window" );
+    // Trigger default filter view on page load
+    $("#filter").submit();
 });
 
