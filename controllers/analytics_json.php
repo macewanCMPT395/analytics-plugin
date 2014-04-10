@@ -189,17 +189,17 @@ class Analytics_json_Controller extends Controller {
             $country_id = null;
             $chart_data = array();
 
-            if( isset( $filters[ 'chartType' ] ) )
+            if( isset( $filters[ 'chartType' ] ) AND ! empty( $filters[ 'chartType' ] ) )
             {
                 $chart_type = $filters[ 'chartType' ];
             }
 
-            if( isset( $filters[ 'keyword' ] ) )
+            if( isset( $filters[ 'keyword' ] ) AND ! empty( $filters['keyword'] ) )
             {
                 $keyword = $filters[ 'keyword' ];
             }
 
-            if( isset( $filters[ 'cumulative' ] ) )
+            if( isset( $filters[ 'cumulative' ] ) AND ! empty( $filters['cumulative'] ) )
             {
                 if( $filters[ 'cumulative' ] == "true" )
                 {
@@ -211,24 +211,24 @@ class Analytics_json_Controller extends Controller {
                 }
             }
 
-            if( isset( $filters[ 'countryId' ] ) )
+            if( isset( $filters[ 'countryId' ] ) AND ! empty( $filters['countryId'] ) )
             {
                 $country_id = $filters[ 'countryId' ];
             }
 
-            if( isset( $filters[ 'categoryId' ] ) )
+            if( isset( $filters[ 'categoryId' ] ) AND ! empty( $filters['categoryId'] ) )
             {
                 $category_id = $filters[ 'categoryId' ];
             }
 
-            if( isset( $filters[ 'dateFrom' ] ) )
+            if( isset( $filters[ 'dateFrom' ] ) AND ! empty( $filters['dateFrom'] ) )
             {
-                $date_from = $filters[ 'dateFrom' ];
+                $date_from = date( "Y-m-d G:i:s", strtotime( $filters[ 'dateFrom' ] ) );
             }
 
-            if( isset( $filters[ 'dateTo' ] ) )
+            if( isset( $filters[ 'dateTo' ] ) AND ! empty( $filters['dateTo'] ) )
             {
-                $date_to = $filters[ 'dateTo' ];
+                $date_to = date( "Y-m-d G:i:s", strtotime( $filters[ 'dateTo' ] ) );
             }
 
             if( $chart_type == "pie" )
