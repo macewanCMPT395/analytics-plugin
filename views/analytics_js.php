@@ -299,27 +299,28 @@ $( document ).ready( function (){
                 });
 
                 // Plot chart
-
                 if( getVars( query_string )["chartType"] === "pie" )
                 {
-                    displayPieChart( "#chart-window", url );     
+                    var options = generatePieChartOptions();
+                    var plot = $.plot( "#chart-window", d, options );
                 }
                 else if( getVars( query_string )["chartType"] == "line" )
                 {
-                    //var options = generateChartOptions();
-                    //var plot = $.plot("#chart-window", d, options );
-                    displayLineChart( "#chart-window", url );
+                    var options = generateChartOptions();
+                    var plot = $.plot("#chart-window", d, options );
                 }
                 else
                 {
-                    displayBarChart( "#chart-window", url );
+                    var options = generateChartOptions();
+                    var plot = $.plot("#chart-window", d, options );
                 }
                 
-                var overview = $.plot( "$chart-overview", d, options );
         }).fail( function(){
-            alert( "failed" );    
+            alert( "An error occured preparing chart." );    
         });
 
     });
+
+    displayPieChart( "#chart-window" );
 });
 
