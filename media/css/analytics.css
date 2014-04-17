@@ -1,0 +1,20 @@
+#analytic-tabs ul {
+    margin: 5px;
+}
+
+#analytic-tabs li {
+    display: inline;
+    background-color: #c2c2c2;
+    padding: 4px;
+    color: #fff;
+    margin: 4px;
+}
+
+#analytic-tabs li a {
+    color: #fff;
+    padding: 4px;
+}
+
+#analytic-tabs li a:hover {
+    background-color: #008cff;
+}
