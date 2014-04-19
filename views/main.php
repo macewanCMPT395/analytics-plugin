@@ -1,4 +1,4 @@
-<?php echo html::stylesheet( 'plugins/analytics/media/css/filter_view', 'screen', FALSE ); ?>
+<?php echo html::stylesheet( 'plugins/analytics-plugin/media/css/filter_view', 'screen', FALSE ); ?>
 <div id="analytics" >
     <div id="chart" >
         <div id="chart-window" style="width:100%;height:600px;"></div>
