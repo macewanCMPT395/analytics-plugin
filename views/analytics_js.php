@@ -272,7 +272,6 @@ function getVars( queryString )
 
 $( document ).ready( function (){
     $("#parellel-coords").hide();
-    $('#chart-type-filter-box input[value="bar"]').hide();
 
     // Tabs
     // NOTE: jquery ui tabs is missing
@@ -333,12 +332,15 @@ $( document ).ready( function (){
                         d.push({
                             data: data['chartData'][i]['data'], 
                             label: data['chartData'][i]['label'] ,
+                            lines: {
+                                show: false
+                            },
                             bars: {
                                 show: true,
                                 fill: true,
                                 lineWidth: 1,
                                 barWidth: 12*24*60*60,
-                                fillColor: d['chartData'][i]['color']
+                                fillColor: data['chartData'][i]['color']
                             }
                         });
                     }
