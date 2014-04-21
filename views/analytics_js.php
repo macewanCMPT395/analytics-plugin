@@ -227,7 +227,7 @@ $( document ).ready( function (){
                             autoscaleMargin: 0.1    
                         },
                         selection: {
-                            mode: "x"           // Select x axis
+                            mode: "x"           // Select axis
                         },
                         legend: {
                             show: false         // Show legend
@@ -305,6 +305,7 @@ $( document ).ready( function (){
     });
 
     // Trigger default filter view on page load
+    $('input[name="chartType"]')[0].checked = true;
     $("#filter").submit();
 });
 
