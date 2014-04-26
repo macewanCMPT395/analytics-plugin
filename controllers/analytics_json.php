@@ -75,36 +75,43 @@ class Analytics_json_Controller extends Controller {
 		$country_id = null;
 		$chart_data = array();
 
+		// Set chart type
 		if( isset( $filters[ 'chartType' ] ) AND ! empty( $filters[ 'chartType' ] ) )
 		{
 			$chart_type = $filters[ 'chartType' ];
 		}
 
+		// Set keyword
 		if( isset( $filters[ 'keyword' ] ) AND ! empty( $filters['keyword'] ) )
 		{
 			$keyword = $filters[ 'keyword' ];
 		}
 
+		// Set cumulative or daily 
 		if( isset( $filters[ 'cumulative' ] ) AND ! empty( $filters['cumulative'] ) )
 		{
 			$cumulative = ( $filters['cumulative'] == 'true' ) ? true : false;
 		}
 
+		// Set country Id
 		if( isset( $filters[ 'countryId' ] ) AND ! empty( $filters['countryId'] ) )
 		{
 			$country_id = $filters[ 'countryId' ];
 		}
 
+		// Set category Id
 		if( isset( $filters[ 'categoryId' ] ) AND ! empty( $filters['categoryId'] ) )
 		{
 			$category_id = $filters[ 'categoryId' ];
 		}
 
+		// Set date from
 		if( isset( $filters[ 'dateFrom' ] ) AND ! empty( $filters['dateFrom'] ) )
 		{
 			$date_from = date( "Y-m-d G:i:s", strtotime( $filters[ 'dateFrom' ] ) );
 		}
 
+		// Set date to
 		if( isset( $filters[ 'dateTo' ] ) AND ! empty( $filters['dateTo'] ) )
 		{
 			$date_to = date( "Y-m-d G:i:s", strtotime( $filters[ 'dateTo' ] ) );
@@ -115,13 +122,13 @@ class Analytics_json_Controller extends Controller {
 			// query database
 			$incidents = $db->get_incidents_by_id( $keyword, $category_id, $country_id, $date_from, $date_to );
 
-			// create JSON object
+			// create PHP object
 			$series = array();
 			foreach( $incidents as $incident )
 			{
 				$data = array(
-						'label' => $incident->category_title,
-						'data' => (int)$incident->incident_count
+					'label' => $incident->category_title,
+					'data' => (int)$incident->incident_count
 				);
 
 				array_push($series, $data);
@@ -135,28 +142,30 @@ class Analytics_json_Controller extends Controller {
 			$categories = $db->get_categories();
 			foreach( $categories as $category )
 			{
-				if(  ! empty($category_id) AND ! in_array( $category->category_id, $category_id ) )
+				// Skip categories that are not selected
+				if( ! empty($category_id) AND ! in_array( $category->category_id, $category_id ) )
 				{
 					continue;
 				}
 				
 				$incidents = $db->get_incidents( $keyword, $category->category_id, null,  false, $date_from, $date_to );
-				$total = 0;
 
 				// create data points
+				$total = 0;
 				$raw_data = array();
 				foreach( $incidents as $incident )
 				{
-
+					// Skip countries that are not selected
 					if( ! empty($country_id) AND ! in_array( $incident->country_id, $country_id ) )
 					{
 						continue;
 					}
 
-					$timestamp = strtotime( $incident->incident_date ) * 1000;
+					$timestamp = strtotime( $incident->incident_date ) * 1000;  // convert to javascript timestamp
 					$count = (int)$incident->incident_count;
 					$total += $count;
 					
+					// Create data points
 					$data = array(
 						$timestamp,
 						$cumulative ? $count : $total
@@ -179,60 +188,60 @@ class Analytics_json_Controller extends Controller {
 		return $chart_data;
 	}
 
-    public function d3_para_coord_json()
-    {
-        $json_features = $this->create_d3_para_coord_json();
-        $this->render_d3_json( $json_features );
-    }
-    
-    public function render_d3_json( $json_features )
-    {
-        $json = json_encode( $json_features);
-
-        header( 'Content-type: application/json; charset=utf-8');
-
-        echo $json;
-    }
-
-    /**
-     * Create a JSON object
-     *
-     * @return a JSON object with the desired data to be rendered
-     */
-    protected function create_d3_para_coord_json()
-    {
-        $db = new Analytics_Model;
-        $search_time = 'Date (Unix)';
+	public function d3_para_coord_json()
+	{
+		$json_features = $this->create_d3_para_coord_json();
+		$this->render_d3_json( $json_features );
+	}
 	
-        // query database
-        $query = $db->get_incidents_table_D3_pc();
+	public function render_d3_json( $json_features )
+	{
+		$json = json_encode( $json_features);
 
-        // create JSON object
-        $json_features = array();
-        foreach ( $query as $row )
-        {
-            $json_item = array();
-            foreach ( $row as $key => $value )
-            {
+		header( 'Content-type: application/json; charset=utf-8');
+
+		echo $json;
+	}
+
+	/**
+	 * Create a JSON object
+	 *
+	 * @return a JSON object with the desired data to be rendered
+	 */
+	protected function create_d3_para_coord_json()
+	{
+		$db = new Analytics_Model;
+		$search_time = 'Date (Unix)';
+	
+		// query database
+		$query = $db->get_incidents_table_D3_pc();
+
+		// create JSON object
+		$json_features = array();
+		foreach ( $query as $row )
+		{
+			$json_item = array();
+			foreach ( $row as $key => $value )
+			{
 
 		
-                if ( $key == $search_time )
-                {
-                    $json_item[ $key ] =   strtotime( $value )  ;
+				if ( $key == $search_time )
+				{
+					$json_item[ $key ] =   strtotime( $value )  ;
 		    //$json_item[ $key ] =  date('o-m', strtotime($value) ) ;
-                }
-                else
-                {
-                    $json_item[ $key ] = $value;
-                }
+				}
+				else
+				{
+					$json_item[ $key ] = $value;
+				}
 		 
 		
 		// $json_item[ $key ] = $value;
 		 
-            }
-            array_push( $json_features, $json_item );
-        }
-        return $json_features;
-    }
+			}
+			array_push( $json_features, $json_item );
+		}
+		return $json_features;
+	}
 
 } // End Main
