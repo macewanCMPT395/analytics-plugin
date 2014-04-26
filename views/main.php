@@ -4,6 +4,7 @@
         <div id="chart-window" style="width:100%;height:600px;"></div>
         <div id="chart-overview" style="width:100%;height:100px;"></div>
         <div id="chart-date-slider"></div>
+        <div id="chart-legend"></div>
     </div> <!-- end chart -->
 
     <div id="chart-filter" >

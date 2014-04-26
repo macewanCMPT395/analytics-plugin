@@ -129,7 +129,10 @@ $( document ).ready( function (){
                         },
                         legend: {
                             position: "nw",         // Legend location
-                            backgroundOpacity: 0    // Legend opacity
+                            backgroundOpacity: 0,   // Legend opacity
+                            margin: 5,
+                            container: '#chart-legend',
+                            noColumns: 8
                         }
                     };
 
@@ -203,8 +206,11 @@ $( document ).ready( function (){
                             //markings: 
                         },
                         legend: {
-                            position: "nw",     // Legend position = n,ne,e,se,s,sw,w,nw
-                            backgroundOpacity: 0    
+                            position: "nw",     // Legend position = ne,se,sw,nw
+                            backgroundOpacity: 0,
+                            margin: 5,
+                            container: '#chart-legend',
+                            noColumns: 8
                         }
                     };
 
@@ -288,7 +294,11 @@ $( document ).ready( function (){
                         },
                         // Legend options
                         legend: {
-                            show: true                  // Show a legend
+                            show: true,                 // Show a legend
+                            position: "ne",
+                            margin: 5,
+                            container: '#chart-legend',
+                            noColumns: 8
                         }
                     };
 
