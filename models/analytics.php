@@ -229,20 +229,22 @@ class Analytics_Model extends Model {
     public function get_incidents_table_D3_pc()
     {
 	$p = $this->db->table_prefix();
+
 	$sql = "
 	    SELECT 
-	    category_title AS Category, 
-	    country AS Country,
-	    incident_verified AS Verified, 
-	    category_trusted AS 'Category Trusted',
-	    incident_date AS 'Date (Unix)',
+	    ".$p."category.category_title AS Category, 
+	    ".$p."country.country AS Country,
+	    ".$p."incident.incident_verified AS Verified, 
+	    ".$p."category.category_trusted AS 'Category Trusted',
+	    ".$p."incident.incident_date AS 'Date (Unix)',
 	    ".$p."incident.id AS 'Incident #'
 
-	    FROM ".$p."incident INNER JOIN  ".$p."incident_category ON  incident.id = incident_category.incident_id
-	    INNER JOIN ".$p."category ON incident_category.category_id
-	    INNER JOIN ".$p."location ON incident.location_id = location.id
-	    INNER JOIN ".$p."country ON location.country_id = country.id"
+	    FROM ".$p."incident INNER JOIN  ".$p."incident_category ON  ".$p."incident.id = ".$p."incident_category.incident_id
+	    INNER JOIN ".$p."category ON ".$p."incident_category.category_id = ".$p."category.id
+	    INNER JOIN ".$p."location ON ".$p."incident.location_id = ".$p."location.id
+	    INNER JOIN ".$p."country ON ".$p."location.country_id = ".$p."country.id"
 	;
+
 	return $this->db->query( $sql );
     }
 }

@@ -1,258 +1,3 @@
-/**
- * Generate pie chart options
- *
- * @param circleRadius the radius of the outer circle between 0 and 1 inclusive
- * @param circleInnerRadius the radius of the inner circle (donut) between 0 and 1 inclusive
- * @param showLegend show the legend
- * @param showLabel show labels on the chart (true or false)
- * @param labelRadius the radius at which labels are placed
- * @param labelThreshold the threshold where labels are not shown
- * @param labelColor the label background color
- * @param labelOpacity the opacity of the label background color
- * @return pie chart options
- */
-function generatePieChartOptions( circleRadius, circleInnerRadius, showLegend, showLabel, labelRadius, labelThreshold, labelColor, labelOpacity )
-{
-    // Check parameters
-    if( typeof( circleRadius ) === 'undefined' )
-        circleRadius = 'auto';
-
-    if( typeof( circleInnerRadius ) === 'undefined' )
-        circleInnerRadius = 0;
-    
-    if( typeof( showLegend ) === 'undefined' )
-        showLegend = true;
-
-    if( typeof( showLabel ) === 'undefined' )
-        showLabel = true;
-
-    if( typeof( labelRadius ) === 'undefined' )
-        labelRadius = 1;
-
-    if( typeof( labelThreshold ) === 'undefined' )
-        labelThreshold = 0.02;
-
-    if( typeof( labelColor ) === 'undefined' )
-        labelColor = '#000';
-
-    if( typeof( labelOpacity ) === 'undefined' )
-        opacity = 0.1;
-
-    // Create options
-    var options = {
-        series: {
-            pie: {
-                show: true,
-                radius: circleRadius,
-                innerRadius: circleInnerRadius,
-                label: {
-                    show: showLabel,
-                    radius: labelRadius,
-                    threshold: labelThreshold,
-                    background: {
-                        opacity: labelOpacity,
-                        color: labelColor
-                    }
-                }
-            }
-        },
-        legend: {
-            show: showLegend
-        }
-    };
-
-    return options;
-}
-
-/**
- * Generate line/bar chart options
- * 
- * @param showLegend show a legend (true/false)
- * @param showLines show lines (true/false)
- * @param showPoints show points (true/false)
- * @param xAxisLabel set x axis label
- * @param yAxisLabel set y axis label
- * @return line/bar chart options
- */
-function generateChartOptions( showLegend, showLines, showPoints, xAxisLabel, yAxisLabel )
-{
-    // Check parameters
-    if( typeof( showLegend ) === 'undefined' )
-        showLegend = true;
-
-    if( typeof( showLines ) === 'undefined' )
-        showLines = true;
-
-    if( typeof( showPoints ) === 'undefined' )
-        showPoints = true;
-
-    if( typeof( xAxisLabel ) === 'undefined' )
-        xAxisLabel = "x";
-
-    if( typeof( yAxisLabel ) === 'undefined' )
-        yAxisLabel = "y";
-
-    // Create options
-    var options = {
-        series: {
-            lines: {
-                show: showLines
-            },
-            points: {
-                show: showPoints
-            }
-        },
-        xaxis: {
-            mode: "time",
-            axisLabel: xAxisLabel,
-            axisLabelUseCanvas: true,
-            axisLabelPadding: 10 
-        },
-        yaxis: {
-            min: 0,
-            axisLabel: yAxisLabel,
-            axisLabelUseCanvas: true,
-            axisLabelPadding: 10 
-        },
-        legend: {
-            show: showLegend,
-            position: "nw"
-        },
-        selection : {
-            mode: "x"
-        }
-    };
-
-    return options;
-}
-
-/**
- * Display a pie chart
- *
- * @param placeholder a string containing the name of the placeholder to bind to
- * @param url the URL where the data is fetched from
- * @param options pie chart options
- */
-function displayPieChart( placeholder, url, options )
-{
-    // Check parameters
-    if( typeof( placeholder ) === 'undefined' )
-        placeholder ='#chart-window';
-
-    if( typeof( url ) === 'undefined' )
-        url = '<?php echo url::base(TRUE).'analytics_json/piechart_json/'; ?>';
-
-    if( typeof( options ) === 'undefined' )
-        options = generatePieChartOptions();
-
-    // Plot pie chart
-    $.getJSON( url, function( data ){
-        $.plot( placeholder, data[ 'chartData' ], options );
-    });
-}
-
-/**
- * Display a line chart
- *
- * @param placeholder a string containing the name of the placeholder to bind to
- * @param url the URL where the data is fetched from
- * @param options the line chart options
- */
-function displayLineChart( placeholder, url, options )
-{
-    // Check parameters and set defaults if necessary
-    if( typeof( placeholder ) === 'undefined' )
-        placeholder ='#chart-window';
-
-    if( typeof( url ) === 'undefined' )
-        url = '<?php echo url::base(TRUE).'analytics_json/linechart_json/1/'; ?>';
-
-    if( typeof( options ) === 'undefined' )
-        options = generateChartOptions();
-
-    // Plot line chart
-    $.getJSON( url, function( d ){
-        var data = [];
-
-        // Gather all data series to plot 
-        $(d['chartData']).each( function( i ){
-            data.push({ 
-                data: d['chartData'][i]['data'], 
-                label: d['chartData'][i]['category'] 
-            });
-        });
-
-        // Allow zoom
-        $( placeholder ).bind( "plotselected" , function( event, ranges ){
-            plot = $.plot( placeholder, data, $.extend(true, {}, options, {
-                xaxis: {
-                    min: ranges.xaxis.from,
-                    max: ranges.xaxis.to
-                }
-            }));
-        });
-
-        // plot graph
-        $.plot( placeholder, data, options );
-    });
-}
-
-/**
- * Display a bar chart
- *
- * @param placeholder a string containing the name of the placeholder to bind chart to
- * @param url the URL where the data is fetched from
- * @param options the bar chart options
- */
-function displayBarChart( placeholder, url, options )
-{
-    var plot;
-
-    // Check parameters and set defaults if necessary
-    if( typeof( placeholder ) === 'undefined' )
-        placeholder ='#chart-window';
-
-    if( typeof( url ) === 'undefined' )
-        url = '<?php echo url::base( TRUE ).'analytics_json/linechart_json/'; ?>';
-
-    if( typeof( options ) === 'undefined' )
-        options = generateChartOptions( true, false, false );
-
-    // Plot line chart
-    $.getJSON( url, function( d ){
-        var data = [];
-
-        // Gather data from all data series
-        $(d['chartData']).each( function( i ){
-            data.push({ 
-                data: d['chartData'][i]['data'], 
-                label: d['chartData'][i]['category'],
-                // bar chart specific options
-                bars: { 
-                    show: true,
-                    barWidth: 12*24*60*60,
-                    fill: true,
-                    lineWidth: 1,
-                    fillColor: d['chartData'][i]['color']
-                }
-            });
-        });
-
-        // Plot line chart
-        plot = $.plot( placeholder, data, options );
-
-        $( placeholder ).bind( "plotselected" , function( event, ranges ){
-            plot = $.plot( placeholder, data, $.extend(true, {}, options, {
-                xaxis: {
-                    min: ranges.xaxis.from,
-                    max: ranges.xaxis.to
-                }
-            }));
-        });
-        $.plot( placeholder, data, options );
-    });
-}
-
 // Get query string value
 // NOTE: stackoverflow.com/questions/4656843/jquery-get-querystring-from-url
 function getVars( queryString )
@@ -272,7 +17,6 @@ function getVars( queryString )
 
 $( document ).ready( function (){
     $("#parellel-coords").hide();
-    $('#chart-type-filter-box input[value="bar"]').hide();
 
     // Tabs
     // NOTE: jquery ui tabs is missing
@@ -308,6 +52,7 @@ $( document ).ready( function (){
         maxDate: 0
     });
 
+    // The two charts to display
     var plot;
     var plot_overview;
 
@@ -318,195 +63,266 @@ $( document ).ready( function (){
 
         // Get query string
         var query_string = $('#filter').serialize();
-        var url ='<?php echo url::base(TRUE)."analytics_json/get"; ?>';
 
         // Generate charts
         $.ajax({
-            url: url,
+            url: '<?php echo url::base(TRUE)."analytics_json/get"; ?>',
             data: query_string
         }).success( function(data){
-                // Gather all data series to plot 
-                var d = [];
+                // Init data series
+                var data_series = [];
+
+                // Get data series
                 $(data['chartData']).each( function( i ){
+
+                    // Bar charts require special options on each data series
                     if( getVars( query_string )["chartType"] === "bar" )
                     {
-                        d.push({
-                            data: data['chartData'][i]['data'], 
-                            label: data['chartData'][i]['label'] ,
+                        // Create data series for each data set
+                        data_series.push({
+                            data: data['chartData'][i]['data'],             // Select data to display
+                            label: data['chartData'][i]['label'] ,          // Select data labels
+                            lines: {
+                                show: false                                 // Show lines between points
+                            },
                             bars: {
-                                show: true,
-                                fill: true,
-                                lineWidth: 1,
-                                barWidth: 12*24*60*60,
-                                fillColor: d['chartData'][i]['color']
+                                show: true,                                 // Show bars
+                                fill: true,                                 // Fill bars
+                                lineWidth: 1,                               // Pixels
+                                barWidth: 12*24*60*60,                      // Set bar width
                             }
                         });
                     }
+                    // Create data series for normal data set
                     else
                     {
-                        d.push({ 
-                            data: data['chartData'][i]['data'], 
-                            label: data['chartData'][i]['label'] 
+                        // Create data series for each data set
+                        data_series.push({ 
+                            data: data['chartData'][i]['data'],         // Select data to plot
+                            label: data['chartData'][i]['label']        // Select data labels
                         });
                     }
                 });
 
-                // Plot chart
-                if( getVars( query_string )["chartType"] === "pie" )
-                {
-                    var options = generatePieChartOptions('auto', 0, false );
-                    plot = $.plot( "#chart-window", d, options );
+                // Get chart type
+                var chart_type = getVars( query_string )[ "chartType" ];
 
-                    $('#chart-overview').hide();
-                }
-                else if( getVars( query_string )["chartType"] == "line" )
+                // Plot chart
+                switch( chart_type )
                 {
+                case 'bar':
+                    // Show chart overview
                     $('#chart-overview').show();
 
-                    // Plot main line chart
+                    // Set bar chart options
                     var options = {
                         xaxis: {
-                            mode: "time",
-                            tickLength: 5
+                            mode: "time",           // show date/time on axis
+                            tickLength: 5           // point interval
                         },
                         selection: {
-                            mode: "x"
+                            mode: "x"               // Select axis
                         },
                         grid: {
                             //markings: 
                         },
                         legend: {
-                            position: "nw",
-                            backgroundOpacity: 0
+                            position: "nw",         // Legend location
+                            backgroundOpacity: 0,   // Legend opacity
+                            margin: 5,
+                            container: '#chart-legend',
+                            noColumns: 8
                         }
                     };
 
-                    plot = $.plot("#chart-window", d, options );
+                    // Plot bar chart
+                    plot = $.plot("#chart-window", data_series, options );
 
-                    // Plot chart overview
+                    // Set chart overview options
                     var overview_options = {
                         series: {
                             lines: {
-                                show: true,
+                                show: true,         // Display lines
                                 lineWidth: 1
                             },
-                            shadowSize: 0
+                            shadowSize: 0,          // Set shadow size
                         },
                         xaxis: {
                             ticks: [],
-                            mode: "time"
+                            mode: "time"            // Display date/time on axis
                         },
                         yaxis: {
                             ticks: [],
-                            min: 0,
-                            autoscaleMargin: 0.1
+                            min: 0,                 // Minimum value to show
+                            autoscaleMargin: 0.1    // Scale axis
                         },
                         selection: {
-                            mode: "x"
+                            mode: "x"               // Select on axis
                         },
                         legend: {
-                            show: false
-                        }
+                            show: false             // Display legend
+                        },
                     };
 
-                    plot_overview = $.plot( "#chart-overview", d, overview_options );
+                    // Plot bar chart overview
+                    plot_overview = $.plot( "#chart-overview", data_series, overview_options );
 
                     // Bind the charts together
-
                     $("#chart-window").bind("plotselected", function( event, ranges ){
-                        // Zoom
-                        plot = $.plot( "#chart-window", d, $.extend( true, {}, options, {
+                        // Select ranges
+                        plot = $.plot( "#chart-window", data_series, $.extend( true, {}, options, {
                             xaxis: {
                                 min: ranges.xaxis.from,
                                 max: ranges.xaxis.to
                             }
                         }));
 
-                        // Dont fire event on overview
+                        // Dont fire event on overview (prevents infinite loop)
                         plot_overview.setSelection( ranges, true );
                     });
 
+                    // Zoom to selection
                     $("#chart-overview").bind("plotselected", function( event, ranges ){
                         plot.setSelection( ranges );
                     });
-                }
-                else
-                {
-                    // Plot main bar chart
+
+                    break;
+
+                case "line":
+                    // Show chart overview
+                    $('#chart-overview').show();
+
+                    // Set line chart options
                     var options = {
+                        series: {
+                            lines: {
+                                show: true      // Display lines
+                            },
+                            points: {
+                                show: true      // Display points
+                            },
+                        },
                         xaxis: {
-                            mode: "time",
-                            tickLength: 5
+                            mode: "time",       // Use dates/times on axis
+                            tickLength: 5       // How many points to show
                         },
                         selection: {
-                            mode: "x"
+                            mode: "x"           // Select axis
                         },
                         grid: {
                             //markings: 
                         },
                         legend: {
-                            position: "nw",
-                            backgroundOpacity: 0
+                            position: "nw",     // Legend position = ne,se,sw,nw
+                            backgroundOpacity: 0,
+                            margin: 5,
+                            container: '#chart-legend',
+                            noColumns: 8
                         }
                     };
 
-                    plot = $.plot("#chart-window", d, options );
-
-                    // Plot chart overview
+                    // Set overview line chart options
                     var overview_options = {
                         series: {
                             lines: {
-                                show: true,
-                                lineWidth: 1
+                                show: true,     // Draw lines between points
+                                lineWidth: 1    // Pixels
                             },
-                            shadowSize: 0
+                            shadowSize: 0       // Display shadow
                         },
                         xaxis: {
                             ticks: [],
-                            mode: "time"
+                            mode: "time"        // show date/time on axis
                         },
                         yaxis: {
                             ticks: [],
                             min: 0,
-                            autoscaleMargin: 0.1
+                            autoscaleMargin: 0.1    
                         },
                         selection: {
-                            mode: "x"
+                            mode: "x"           // Select axis
                         },
                         legend: {
-                            show: false
+                            show: false         // Show legend
                         }
                     };
 
-                    plot_overview = $.plot( "#chart-overview", d, overview_options );
+                    // Plot pie chart
+                    plot = $.plot("#chart-window", data_series, options );
+
+                    // Plot overview chart
+                    plot_overview = $.plot( "#chart-overview", data_series, overview_options );
 
                     // Bind the charts together
-
                     $("#chart-window").bind("plotselected", function( event, ranges ){
-                        // Zoom
-                        plot = $.plot( "#chart-window", d, $.extend( true, {}, options, {
+                        // Select range
+                        plot = $.plot( "#chart-window", data_series, $.extend( true, {}, options, {
                             xaxis: {
                                 min: ranges.xaxis.from,
                                 max: ranges.xaxis.to
                             }
                         }));
 
-                        // Dont fire event on overview
+                        // Dont fire event on overview (prevents infinite loop)
                         plot_overview.setSelection( ranges, true );
                     });
 
+                    // Plot selection
                     $("#chart-overview").bind("plotselected", function( event, ranges ){
                         plot.setSelection( ranges );
                     });
+
+                    break;
+
+                case "pie": // fall through
+                default:
+
+                    // Hide chart overview window
+                    $('#chart-overview').hide();
+
+                    // Set piechart options
+                    var options = {
+                        series: {
+                            // Set pie chart specific options
+                            pie: {
+                                show: true,             // show pie chart
+                                radius: 'auto',         // set circle radius = [0..1]
+                                innerRadius: 0,         // set inner circle radius (doghnut charts) = [0..1]
+                                label: {            
+                                    show: true,         // Show labels
+                                    radius: 1,          // Label size
+                                    threshold: 0.02,    // Sets whether or not to display lablels [0..1]
+                                    background: {   
+                                        opacity: 0.8,   // set label opacity
+                                        color: '#000'   // set label color
+                                    }
+                                }
+                            }
+                        },
+                        // Legend options
+                        legend: {
+                            show: true,                 // Show a legend
+                            position: "ne",
+                            margin: 5,
+                            container: '#chart-legend',
+                            noColumns: 8
+                        }
+                    };
+
+                    // Plot pie chart
+                    plot = $.plot( "#chart-window", data_series, options );
+                    
+                    break;
                 }
-                
+
         }).fail( function(){
+            // Inform user
             alert( "An error occured preparing chart." );    
         });
-
     });
 
     // Trigger default filter view on page load
+    $('input[name="chartType"]')[0].checked = true;
     $("#filter").submit();
 });
 
