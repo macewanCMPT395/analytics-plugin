@@ -90,7 +90,6 @@ $( document ).ready( function (){
                                 fill: true,                                 // Fill bars
                                 lineWidth: 1,                               // Pixels
                                 barWidth: 12*24*60*60,                      // Set bar width
-                                fillColor: data['chartData'][i]['color']    // Set bar fill color
                             }
                         });
                     }
@@ -146,7 +145,7 @@ $( document ).ready( function (){
                                 show: true,         // Display lines
                                 lineWidth: 1
                             },
-                            shadowSize: 0           // Set shadow size
+                            shadowSize: 0,          // Set shadow size
                         },
                         xaxis: {
                             ticks: [],
@@ -162,7 +161,7 @@ $( document ).ready( function (){
                         },
                         legend: {
                             show: false             // Display legend
-                        }
+                        },
                     };
 
                     // Plot bar chart overview
@@ -195,6 +194,14 @@ $( document ).ready( function (){
 
                     // Set line chart options
                     var options = {
+                        series: {
+                            lines: {
+                                show: true      // Display lines
+                            },
+                            points: {
+                                show: true      // Display points
+                            },
+                        },
                         xaxis: {
                             mode: "time",       // Use dates/times on axis
                             tickLength: 5       // How many points to show
